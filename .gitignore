@@ -34,3 +34,5 @@
 # Random residue
 .DS_Store
 TheTwitchNetwork/DatasetProcessing/env
+TheTwitchNetwork/DatasetProcessing/.ipynb_checkpoints
+.env
