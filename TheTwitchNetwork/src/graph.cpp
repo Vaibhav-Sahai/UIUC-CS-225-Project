@@ -17,7 +17,7 @@ void Graph::SocialGraph(const std::vector<std::string> & vertices, std::vector<s
 // 2. use ifstream, getline to go through each line's edges in musae_ENGB_edges.csv
 // - add each opposing id of edge (2x) to the respective key's value set
 // - rinse and repeat for all edges
-void populateAdjacencyGraph(std::string ids_fpath, std::string edges_fpath) {
+void Graph::populateAdjacencyGraph(std::string ids_fpath, std::string edges_fpath) {
     //populate adjacency graph keys with new_ids
     std::string line;
     std::ifstream ifs_ids(ids_fpath);
@@ -47,4 +47,32 @@ void populateAdjacencyGraph(std::string ids_fpath, std::string edges_fpath) {
         }
         ifs_edges.close();
     }
+}
+
+// BFS queue
+// creating a visited set
+// add start_id to queue
+// while queue is not empty
+//  - pop front of queue
+//  - if popped id is not in visited set
+//      - add popped id to visited set
+//      - add popped id's edges to queue
+// return visited set
+
+std::set<int> Graph::BFS(int start_id) {
+    std::queue<int> bfs_queue;
+    std::set<int> visited;
+    bfs_queue.push(start_id);
+    while(!bfs_queue.empty()) {
+        int curr_id = bfs_queue.front();
+        bfs_queue.pop();
+        if (visited.find(curr_id) == visited.end()) {
+            visited.insert(curr_id);
+            auto curr_iter = _adjacency_graph.find(curr_id);
+            for (auto edge : curr_iter.second) {
+                bfs_queue.push(edge);
+            }
+        }
+    }
+    return visited;
 }
