@@ -1,14 +1,18 @@
 #include "graph.hpp"
+#include <iostream>
 
-using namespace std;
-
-Graph::Graph(const std::string& people_fpath) {
-    //
+Graph::Graph(std::string message) {
+	std::cout << message << std::endl;
 }
 
-void Graph::SocialGraph(const std::vector<std::string> & vertices, std::vector<std::vector<std::string>>& relations) {
-    //
-}
+
+// Graph::Graph(const std::string& people_fpath) {
+//     //
+// }
+
+// void Graph::SocialGraph(const std::vector<std::string> & vertices, std::vector<std::vector<std::string>>& relations) {
+//     //
+// }
 
 // 1. load new_ids from musae_ENGB_target.csv (notstreamer_names from streamer_features.csv) into unordered_map 
 //  - use ifstream library, getline to get each new line...
@@ -38,16 +42,8 @@ void Graph::populateAdjacencyGraph(std::string ids_fpath, std::string edges_fpat
         while(getline(ifs_edges.line)) {
             int first_id = std::stoi(line.substr(0,line.find_last_of(',')));
             int second_id = std::stoi(line.substr(line.find_last_of(',')+1,line.size()));
-            
-            auto first_iter = _adjacency_graph.find(first_id);
-            first_iter.second.insert(second_id);
 
-            auto second_iter = _adjacency_graph.find(second_id);
-            second_iter.second.insert(first_id);
-        }
-        ifs_edges.close();
-    }
-}
+
 
 // BFS queue
 // creating a visited set
