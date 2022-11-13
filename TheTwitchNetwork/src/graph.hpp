@@ -1,24 +1,31 @@
 #pragma once
 
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include <set>
 #include <string>
 #include <queue>
 #include <algorithm>
 
-
-
 #include <fstream>
 #include <iostream>
 
-using namespace std;
+// Struct that holds our node attributes
+struct Node {
+    std::string alias_id;
+    std::string game_id;
+};
 
 class Graph {
     public:
         Graph(std::string message);
-        std::set<int> BFS(int start_id);
+        // std::set<int> BFS(int start_id);
+        void CreateStreamerToAliasMap(std::string path_streamer_features, std::string path_musae_ENGB_target);
 
     private:
+        // Map to hold streamer_name to alias ID 
+        std::map<std::string, std::string> streamer_to_alias;
+        
+
 
 };
