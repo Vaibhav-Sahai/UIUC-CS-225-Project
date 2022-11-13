@@ -5,18 +5,25 @@ Graph::Graph(std::string message) {
 	std::cout << message << std::endl;
 }
 
+
+/*
+ * Function to create a map of streamer name to alias ID
+ * @param path_streamer_features: Path to streamer_features.csv
+ * @param path_musae_ENGB_target: Path to musae_ENGB_target.csv
+*/
+
 void Graph::CreateStreamerToAliasMap(std::string path_streamer_features, std::string path_musae_ENGB_target) {
 	// Open the files
 	std::ifstream streamer_features(path_streamer_features);
 	std::ifstream musae_ENGB_target(path_musae_ENGB_target);
 
-	std::string line;
+	std::string line = "";
 
 	// Skip the first line
 	std::getline(streamer_features, line);
 
 	while (std::getline(streamer_features, line)) {
-		// std::cout << "Line: " << line << std::endl;
+		std::cout << "Line: " << line << std::endl;
 		// Split the line by the comma
 		std::string delimiter = ",";
 		size_t pos = 0;
@@ -32,19 +39,58 @@ void Graph::CreateStreamerToAliasMap(std::string path_streamer_features, std::st
 		// Add the last token
 		tokens.push_back(line);
 
-		// Add the streamer name to alias ID to the map
-		streamer_to_alias[tokens[0]] = tokens[1];
+		// Add the streamer name to new_id to the map
+		streamer_to_alias[tokens[4]] = tokens[1];
 	}
 	std::cout << "Streamer to Alias Map Created" << std::endl;
-	// print map size
-	std::cout << "Size of map: " << streamer_to_alias.size() << std::endl;
-	// print map
+	// // DEBUG:
+	// std::cout << "Size of map: " << streamer_to_alias.size() << std::endl;
 	// for (auto it = streamer_to_alias.begin(); it != streamer_to_alias.end(); ++it) {
 	// 	std::cout << it->first << " => " << it->second << '\n';
 	// }
 
 }
 
+/*
+ * Function to create a map of game name to game ID
+ * @param path_streamer_features: Path to streamer_features.csv
+*/
+
+void Graph::CreateGameToIDMap(std::string path_streamer_features) {
+	// Open the file
+	std::ifstream streamer_features(path_streamer_features);
+
+	std::string line = "";
+
+	// Skip the first line
+	std::getline(streamer_features, line);
+
+	while (std::getline(streamer_features, line)) {
+		// Split the line by the comma
+		std::string delimiter = ",";
+		size_t pos = 0;
+		std::string token;
+		std::vector<std::string> tokens;
+
+		while ((pos = line.find(delimiter)) != std::string::npos) {
+			token = line.substr(0, pos);
+			tokens.push_back(token);
+			line.erase(0, pos + delimiter.length());
+		}
+
+		// Add the last token
+		tokens.push_back(line);
+
+		// Add the game name to game ID to the map
+		game_to_game[tokens[2]] = tokens[3];
+	}
+	std::cout << "Game to ID Map Created" << std::endl;
+	// // DEBUG:
+	// std::cout << "Size of map: " << game_to_game.size() << std::endl;
+	// for (auto it = game_to_game.begin(); it != game_to_game.end(); ++it) {
+	// 	std::cout << it->first << " => " << it->second << '\n';
+	// }
+}
 
 // Graph::Graph(const std::string& people_fpath) {
 //     //
