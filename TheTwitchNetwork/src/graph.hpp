@@ -20,6 +20,7 @@ class Graph {
     public:
         Graph(std::string message);
         // std::set<int> BFS(int start_id);
+        void PopulateGraph();
 
     private:
         // Map to hold streamer_name to alias ID 
@@ -33,4 +34,7 @@ class Graph {
         // Private Helper
         void CreateStreamerToAliasMap(std::string path_streamer_features, std::string path_musae_ENGB_target);
         void CreateGameToIDMap(std::string path_streamer_features);
+
+        void AddVertex(Node& streamer);
+        bool VertexInGraph(Node& streamer);
 };

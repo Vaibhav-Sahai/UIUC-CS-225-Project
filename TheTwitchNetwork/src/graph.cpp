@@ -93,6 +93,30 @@ void Graph::CreateGameToIDMap(std::string path_streamer_features) {
 	// }
 }
 
+/*
+ * Function to add a vertex to the graph
+ * @param streamer: Node struct that holds the streamer's alias ID and game ID
+ * throws: std::invalid_argument if the streamer is already in the graph
+*/
+
+void Graph::AddVertex(Node& streamer) {
+	if (VertexInGraph(streamer)) {
+		throw std::invalid_argument("Streamer already in graph");
+	}
+
+	adj_list[streamer] = std::vector<Node>(); // Create an empty adj list for the streamer
+}
+
+/*
+ * Function to check if a vertex is in the graph
+ * @param streamer: Node struct that holds the streamer's alias ID and game ID
+ * @return: True if the streamer is in the graph, false otherwise
+*/
+
+bool Graph::VertexInGraph(Node& streamer) {
+	return adj_list.find(streamer) != adj_list.end();
+}
+
 // Graph::Graph(const std::string& people_fpath) {
 //     //
 // }
