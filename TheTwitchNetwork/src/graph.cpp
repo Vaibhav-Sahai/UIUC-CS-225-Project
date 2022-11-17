@@ -3,6 +3,8 @@
 
 Graph::Graph(std::string message) {
 	std::cout << message << std::endl;
+	this->CreateStreamerToAliasMap("DatasetProcessing/streamer_features.csv", "DatasetProcessing/musae_ENGB_target.csv");
+  	this->CreateGameToIDMap("DatasetProcessing/streamer_features.csv");
 }
 
 
@@ -23,7 +25,6 @@ void Graph::CreateStreamerToAliasMap(std::string path_streamer_features, std::st
 	std::getline(streamer_features, line);
 
 	while (std::getline(streamer_features, line)) {
-		std::cout << "Line: " << line << std::endl;
 		// Split the line by the comma
 		std::string delimiter = ",";
 		size_t pos = 0;

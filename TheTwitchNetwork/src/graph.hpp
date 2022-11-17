@@ -20,8 +20,6 @@ class Graph {
     public:
         Graph(std::string message);
         // std::set<int> BFS(int start_id);
-        void CreateStreamerToAliasMap(std::string path_streamer_features, std::string path_musae_ENGB_target);
-        void CreateGameToIDMap(std::string path_streamer_features);
 
     private:
         // Map to hold streamer_name to alias ID 
@@ -31,4 +29,8 @@ class Graph {
 
         // Our adjacency list
         std::map<Node, std::vector<Node>> adj_list;
+
+        // Private Helper
+        void CreateStreamerToAliasMap(std::string path_streamer_features, std::string path_musae_ENGB_target);
+        void CreateGameToIDMap(std::string path_streamer_features);
 };
