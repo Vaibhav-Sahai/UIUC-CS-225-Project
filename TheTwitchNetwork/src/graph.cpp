@@ -5,6 +5,7 @@ Graph::Graph(std::string message) {
 	std::cout << message << std::endl;
 	this->CreateStreamerToAliasMap("DatasetProcessing/streamer_features.csv", "DatasetProcessing/musae_ENGB_target.csv");
   	this->CreateGameToIDMap("DatasetProcessing/streamer_features.csv");
+	this->PopulateGraph();
 }
 
 
@@ -94,6 +95,60 @@ void Graph::CreateGameToIDMap(std::string path_streamer_features) {
 }
 
 /*
+ * Function to populate the graph with nodes and edges
+*/
+
+void Graph::PopulateGraph() {
+	// open streamer_features.csv and read the game_id and new_id columns
+	std::ifstream streamer_features("DatasetProcessing/streamer_features.csv");
+	std::string line = "";
+
+	// Skip the first line
+	std::getline(streamer_features, line);
+
+	while (std::getline(streamer_features, line)) {
+		std::string delimiter = ",";
+		size_t pos = 0;
+		std::string token;
+		std::vector<std::string> tokens;
+
+		while ((pos = line.find(delimiter)) != std::string::npos) {
+			token = line.substr(0, pos);
+			tokens.push_back(token);
+			line.erase(0, pos + delimiter.length());
+		}
+
+		// Add the last token
+		tokens.push_back(line);
+
+		// Create the node, add it to the graph
+		// We've a game that has a , in its name, this throws off the delimiter and causes alias to reside in tokens[5]
+		// instead of token[4]. Below is a BAD fix for it (sorry future me)
+		// If tokens[4] is not a number, then we need to consider tokens[5]
+
+		try {
+			std::cout << "Fix Check: " << tokens[4] << std::endl;
+			int alias_id = std::stoi(tokens[4]);
+			Node node(tokens[4], tokens[2]);
+			this->AddVertex(node);
+		} catch (std::invalid_argument) {
+			std::cout << "Invalid Alias" << std::endl;
+			Node node(tokens[5], tokens[2]);
+			this->AddVertex(node);
+			std::cout << "Added node with alias: " << tokens[5] << std::endl;
+			std::cout << "Added node with game: " << tokens[2] << std::endl;
+			break;
+		}
+		
+	}
+	std::cout << "Nodes Added" << std::endl;
+
+	// // DEBUG:
+	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
+	// PrintAdjList();
+}
+
+/*
  * Function to add a vertex to the graph
  * @param streamer: Node struct that holds the streamer's alias ID and game ID
  * throws: std::invalid_argument if the streamer is already in the graph
@@ -101,10 +156,13 @@ void Graph::CreateGameToIDMap(std::string path_streamer_features) {
 
 void Graph::AddVertex(Node streamer) {
 	if (VertexInGraph(streamer)) {
+		std::cout << streamer.alias_id << std::endl;
 		throw std::invalid_argument("Streamer already in graph");
 	}
-
+	std::cout << "Adding " << streamer.alias_id << std::endl;
 	adj_list[streamer] = std::vector<Node>(); // Create an empty adj list for the streamer
+	// check if added correctly
+	std::cout << adj_list.size() << std::endl;
 }
 
 /*
@@ -114,7 +172,15 @@ void Graph::AddVertex(Node streamer) {
 */
 
 bool Graph::VertexInGraph(Node streamer) {
-	return adj_list.find(streamer) != adj_list.end();
+	// Loop through all keys in adj list, dont use iterators
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		if (it->first.alias_id == streamer.alias_id) {
+			std::cout << "First alias: " << it->first.alias_id << std::endl;
+			std::cout << "Second alias: " << streamer.alias_id << std::endl;
+			return true;
+		}
+	}
+	return false;
 }
 
 /* 
@@ -124,7 +190,7 @@ bool Graph::VertexInGraph(Node streamer) {
 void Graph::PrintAdjList() {
 	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
 		// second arg is a vector of nodes, so we need to iterate through that
-		std::cout << "Alias_ID: " << it->first.alias_id << "Game_ID: " << it->first.game_id << " => ";
+		std::cout << "Alias_ID: " << it->first.alias_id << ", " << "Game_ID: " << it->first.game_id << " => " << std::endl;
 		for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
 			std::cout << it2->alias_id << " ";
 		}

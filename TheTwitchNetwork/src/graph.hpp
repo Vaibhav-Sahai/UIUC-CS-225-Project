@@ -21,9 +21,21 @@ struct Node {
         return (alias_id == other.alias_id) && (game_id == other.game_id);
     }
 
-    // Overload the < operator so we can compare two nodes
+    // Overload the < operator so we can overload std::less for Node
     bool operator<(const Node& other) const {
-        return (alias_id < other.alias_id) && (game_id < other.game_id);
+        return (alias_id < other.alias_id);
+    }
+
+    // constructor for Node
+    Node(std::string alias_id, std::string game_id) {
+        this->alias_id = alias_id;
+        this->game_id = game_id;
+    }
+
+    // Default constructor for Node
+    Node() {
+        this->alias_id = "";
+        this->game_id = "";
     }
 };
 
@@ -41,6 +53,8 @@ class Graph {
 
         // Our adjacency list
         std::map<Node, std::vector<Node>> adj_list;
+
+        std::map<std::string, std::vector<int>> adj_list_int;
 
 
 
