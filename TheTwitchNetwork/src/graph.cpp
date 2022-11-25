@@ -120,32 +120,82 @@ void Graph::PopulateGraph() {
 
 		// Add the last token
 		tokens.push_back(line);
+		std::cout << "Line: " << line << std::endl; 
+		if (tokens[4] == "6357") {
+			std::cout << "Found 6357" << std::endl;
+			break;
+		}
 
 		// Create the node, add it to the graph
 		// We've a game that has a , in its name, this throws off the delimiter and causes alias to reside in tokens[5]
 		// instead of token[4]. Below is a BAD fix for it (sorry future me)
 		// If tokens[4] is not a number, then we need to consider tokens[5]
 
-		try {
-			std::cout << "Fix Check: " << tokens[4] << std::endl;
-			int alias_id = std::stoi(tokens[4]);
-			Node node(tokens[4], tokens[2]);
-			this->AddVertex(node);
-		} catch (std::invalid_argument) {
-			std::cout << "Invalid Alias" << std::endl;
-			Node node(tokens[5], tokens[2]);
-			this->AddVertex(node);
-			std::cout << "Added node with alias: " << tokens[5] << std::endl;
-			std::cout << "Added node with game: " << tokens[2] << std::endl;
-			break;
-		}
+		// try {
+		// 	std::cout << "Fix Check: " << tokens[4] << std::endl;
+		// 	int alias_id = std::stoi(tokens[4]);
+		// 	if (alias_id == 6357) {
+		// 		std::cout << "FOUND" << std::endl;
+		// 	}
+		// 	Node node(tokens[4], tokens[2]);
+		// 	this->AddVertex(node);
+		// 	std::cout << "sent to add" << std::endl;
+		// } catch (std::invalid_argument) {
+		// 	std::cout << "Invalid Alias" << std::endl;
+		// 	Node node(tokens[5], tokens[2]);
+		// 	this->AddVertex(node);
+		// 	std::cout << "Added node with alias: " << tokens[5] << std::endl;
+		// 	std::cout << "Added node with game: " << tokens[2] << std::endl;
+		// }
+		Node node(line, tokens[2]);
+		this->AddVertex(node);
+
+		// if (line == "6357") {
+		// 	break;
+		// }
 		
 	}
 	std::cout << "Nodes Added" << std::endl;
-
-	// // DEBUG:
 	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
-	// PrintAdjList();
+
+	// // Check if alias 6357 exists in adj list
+	// Node node("6357", "116747788.0");
+	// if (this->adj_list.find(node) != this->adj_list.end()) {
+	// 	std::cout << "Alias 6357 exists in adjacency list" << std::endl;
+	// } else {
+	// 	std::cout << "Alias 6357 does not exist in adjacency list" << std::endl;
+	// }
+	
+
+
+	// use musae_ENGB_edges.csv to add edges to the graph
+
+	std::ifstream musae_ENGB_edges("DatasetProcessing/musae_ENGB_edges.csv");
+
+	// Skip the first line
+	std::getline(musae_ENGB_edges, line);
+
+	while (std::getline(musae_ENGB_edges, line)) {
+		std::string delimiter = ",";
+		size_t pos = 0;
+		std::string token;
+		std::vector<std::string> tokens;
+
+		while ((pos = line.find(delimiter)) != std::string::npos) {
+			token = line.substr(0, pos);
+			tokens.push_back(token);
+			line.erase(0, pos + delimiter.length());
+		}
+
+		// Add the last token
+		tokens.push_back(line);
+
+		// Add the edge to the graph
+		this->AddEdge(tokens[0], tokens[1]);
+	}
+	// DEBUG:
+	PrintAdjList();
+	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
 }
 
 /*
@@ -159,10 +209,10 @@ void Graph::AddVertex(Node streamer) {
 		std::cout << streamer.alias_id << std::endl;
 		throw std::invalid_argument("Streamer already in graph");
 	}
-	std::cout << "Adding " << streamer.alias_id << std::endl;
+	// std::cout << "Adding " << streamer.alias_id << std::endl;
 	adj_list[streamer] = std::vector<Node>(); // Create an empty adj list for the streamer
 	// check if added correctly
-	std::cout << adj_list.size() << std::endl;
+	// std::cout << adj_list.size() << std::endl;
 }
 
 /*
@@ -175,12 +225,46 @@ bool Graph::VertexInGraph(Node streamer) {
 	// Loop through all keys in adj list, dont use iterators
 	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
 		if (it->first.alias_id == streamer.alias_id) {
-			std::cout << "First alias: " << it->first.alias_id << std::endl;
-			std::cout << "Second alias: " << streamer.alias_id << std::endl;
+			// std::cout << "First alias: " << it->first.alias_id << std::endl;
+			// std::cout << "Second alias: " << streamer.alias_id << std::endl;
 			return true;
 		}
 	}
 	return false;
+}
+
+/*
+ * Function to add an edge to the graph
+ * @param alias_id_1: The alias ID of the first streamer
+ * @param alias_id_2: The alias ID of the second streamer
+*/
+
+void Graph::AddEdge(std::string alias_id_1, std::string alias_id_2) {
+	// Check if both streamers are in the graph
+	Node streamer_1 = GetNodeFromAlias(alias_id_1);
+	Node streamer_2 = GetNodeFromAlias(alias_id_2);
+
+	// Add the edge to the graph
+	adj_list[streamer_1].push_back(streamer_2);
+	adj_list[streamer_2].push_back(streamer_1);
+}
+
+/*
+ * Function to get a node from an alias ID
+ * @param alias_id: The alias ID of the streamer
+ * @return: The node with the given alias ID
+ * throws: std::invalid_argument if the streamer is not in the graph
+*/
+
+Node Graph::GetNodeFromAlias(std::string alias_id) {
+	// Loop through all keys in adj list, dont use iterators
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		if (it->first.alias_id == alias_id) {
+			return it->first;
+		}
+	}
+	std::cout << "Alias ID: " << alias_id << std::endl;
+	throw std::invalid_argument("Streamer not in graph");
 }
 
 /* 
@@ -192,7 +276,7 @@ void Graph::PrintAdjList() {
 		// second arg is a vector of nodes, so we need to iterate through that
 		std::cout << "Alias_ID: " << it->first.alias_id << ", " << "Game_ID: " << it->first.game_id << " => " << std::endl;
 		for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
-			std::cout << it2->alias_id << " ";
+			std::cout << it2->alias_id << " " << std::endl;
 		}
 	}
 }

@@ -36,3 +36,4 @@
 TheTwitchNetwork/DatasetProcessing/env
 TheTwitchNetwork/DatasetProcessing/.ipynb_checkpoints
 .env
+TheTwitchNetwork/bin/output

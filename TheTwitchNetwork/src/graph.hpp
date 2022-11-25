@@ -65,6 +65,9 @@ class Graph {
         void AddVertex(Node streamer);
         bool VertexInGraph(Node streamer);
 
+        void AddEdge(std::string alias_id_1, std::string alias_id_2);
+        Node GetNodeFromAlias(std::string alias_id);
+
         // Debug Func
         // Print the adjacency list
         void PrintAdjList();
