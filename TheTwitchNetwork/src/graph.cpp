@@ -120,53 +120,17 @@ void Graph::PopulateGraph() {
 
 		// Add the last token
 		tokens.push_back(line);
-		std::cout << "Line: " << line << std::endl; 
-		if (tokens[4] == "6357") {
-			std::cout << "Found 6357" << std::endl;
-			break;
-		}
 
 		// Create the node, add it to the graph
-		// We've a game that has a , in its name, this throws off the delimiter and causes alias to reside in tokens[5]
-		// instead of token[4]. Below is a BAD fix for it (sorry future me)
-		// If tokens[4] is not a number, then we need to consider tokens[5]
-
-		// try {
-		// 	std::cout << "Fix Check: " << tokens[4] << std::endl;
-		// 	int alias_id = std::stoi(tokens[4]);
-		// 	if (alias_id == 6357) {
-		// 		std::cout << "FOUND" << std::endl;
-		// 	}
-		// 	Node node(tokens[4], tokens[2]);
-		// 	this->AddVertex(node);
-		// 	std::cout << "sent to add" << std::endl;
-		// } catch (std::invalid_argument) {
-		// 	std::cout << "Invalid Alias" << std::endl;
-		// 	Node node(tokens[5], tokens[2]);
-		// 	this->AddVertex(node);
-		// 	std::cout << "Added node with alias: " << tokens[5] << std::endl;
-		// 	std::cout << "Added node with game: " << tokens[2] << std::endl;
-		// }
+		// alias_id is always the last element in our sentence, so we can use line for that
+		// game_id is always the 3rd element in our array
+		// NOTE: We would've to deal with ',' if this arrangement ever changes
 		Node node(line, tokens[2]);
 		this->AddVertex(node);
-
-		// if (line == "6357") {
-		// 	break;
-		// }
 		
 	}
 	std::cout << "Nodes Added" << std::endl;
 	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
-
-	// // Check if alias 6357 exists in adj list
-	// Node node("6357", "116747788.0");
-	// if (this->adj_list.find(node) != this->adj_list.end()) {
-	// 	std::cout << "Alias 6357 exists in adjacency list" << std::endl;
-	// } else {
-	// 	std::cout << "Alias 6357 does not exist in adjacency list" << std::endl;
-	// }
-	
-
 
 	// use musae_ENGB_edges.csv to add edges to the graph
 
