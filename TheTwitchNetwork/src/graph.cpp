@@ -221,7 +221,7 @@ void Graph::AddEdge(std::string alias_id_1, std::string alias_id_2) {
 */
 
 Node Graph::GetNodeFromAlias(std::string alias_id) {
-	// Loop through all keys in adj list, dont use iterators
+	// Loop through all keys in adj list
 	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
 		if (it->first.alias_id == alias_id) {
 			return it->first;
