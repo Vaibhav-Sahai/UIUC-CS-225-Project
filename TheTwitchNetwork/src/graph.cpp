@@ -6,6 +6,14 @@ Graph::Graph(std::string message) {
 	this->CreateStreamerToAliasMap("DatasetProcessing/streamer_features.csv", "DatasetProcessing/musae_ENGB_target.csv");
   	this->CreateGameToIDMap("DatasetProcessing/streamer_features.csv");
 	this->PopulateGraph();
+
+	Node n1("998", "26936.0");
+	Node n2("997", "515025.0");
+	auto res = this->BFSPath(n1, n2);
+	for (auto node : res) {
+		std::cout << node.alias_id << " " << node.game_id << std::endl;
+	}
+
 }
 
 
@@ -267,48 +275,53 @@ void Graph::PrintAdjList() {
 // the BFS tree is a tree that contains the shortest path between two nodes
 
 /*
- * Function to create a BFS tree
+ * Function to find the shortest path between two nodes
  * @param start: The starting node
  * @param end: The ending node
  * @return: A BFS tree that contains the shortest path between the start and end nodes
 */
 
-BFS_Tree Graph::CreateBFSTree(Node start, Node end) {
-    // Create a BFS tree
-    BFS_Tree bfs_tree(start, end);
+std::vector<Node> Graph::BFSPath(Node start, Node end) {
+	std::queue<Node> q;
+	std::map<Node, bool> visited;
+	std::map<Node, Node> parent;
+	
+	// initialize visited map
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		visited[it->first] = false;
 
-    // Create a queue for BFS
-    std::queue<Node> queue;
+		// initialize parent vector with empty nodes
+		parent[it->first] = Node();
+	}
 
-    // Mark the current node as visited and enqueue it
-    bfs_tree.visited[start] = true;
-    queue.push(start);
+	// add start node to queue
+	q.push(start);
+	visited[start] = true;
 
-    // 'i' will be used to get all adjacent vertices of a vertex
-    std::vector<Node>::iterator i;
+	while (!q.empty()) {
+		Node curr = q.front();
+		q.pop();
+		auto neighbors = GetNeighbors(curr);
+		for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
+			if (!visited[*it]) {
+				visited[*it] = true;
+				q.push(*it);
+				parent[*it] = curr;
+			}
+			// if we found the end node, break out of the loop
+			if (*it == end) {
+				break;
+			}
+		}
+	}
 
-    while (!queue.empty()) {
-        // Dequeue a vertex from queue and print it
-        Node current_node = queue.front();
-        queue.pop();
+	std::vector<Node> path;
+	while(parent[end] != Node()) {
+		path.push_back(end);
+		end = parent[end];
+	}
 
-        // Get all adjacent vertices of the dequeued vertex s. If a adjacent has not been visited, then mark it visited and enqueue it
-        for (i = adj_list[current_node].begin(); i != adj_list[current_node].end(); ++i) {
-            if (!bfs_tree.visited[*i]) {
-                bfs_tree.visited[*i] = true;
-                queue.push(*i);
-                bfs_tree.parent[*i] = current_node;
-            }
-        }
-    }
-
-    return bfs_tree;
+	// Reverse the path
+	std::reverse(path.begin(), path.end());
+	return path;
 }
-
-
-
-
-
-
-
-

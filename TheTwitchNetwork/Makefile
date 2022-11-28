@@ -20,6 +20,3 @@ bin/catch.o: tests/catch.hpp
 
 clean:
 	rm bin/*.o bin/output bin/test
-
-
-
