@@ -45,6 +45,12 @@ class Graph {
         // std::set<int> BFS(int start_id);
         void PopulateGraph();
 
+        // Get adjacency list
+        std::map<Node, std::vector<Node>> GetAdjList() const;
+
+        // Get std::vector<Node> from Node
+        std::vector<Node> GetNeighbors(Node node) const;
+
     private:
         // Map to hold streamer_name to alias ID 
         std::map<std::string, std::string> streamer_to_alias;
@@ -53,9 +59,6 @@ class Graph {
 
         // Our adjacency list
         std::map<Node, std::vector<Node>> adj_list;
-
-        std::map<std::string, std::vector<int>> adj_list_int;
-
 
 
         // Private Helper

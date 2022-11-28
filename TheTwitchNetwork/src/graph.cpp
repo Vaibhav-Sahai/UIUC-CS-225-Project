@@ -231,6 +231,22 @@ Node Graph::GetNodeFromAlias(std::string alias_id) {
 	throw std::invalid_argument("Streamer not in graph");
 }
 
+/*
+* Function to get adjacency list
+*/
+
+ std::map<Node, std::vector<Node>> Graph::GetAdjList() const {
+	return adj_list;
+}
+
+/*
+* Function to get std::vector<Node> from Node
+*/
+
+ std::vector<Node> Graph::GetNeighbors(Node node) const {
+	return adj_list.at(node);
+}
+
 /* 
  * Function to print the adj list
 */

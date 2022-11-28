@@ -73,6 +73,12 @@
         "functional": "cpp",
         "iterator": "cpp",
         "utility": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "future": "cpp",
+        "list": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "regex": "cpp",
+        "thread": "cpp"
     }
 }
