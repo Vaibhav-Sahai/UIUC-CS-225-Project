@@ -57,5 +57,24 @@ TEST_CASE("PopulateGraph Tests", "[populate]") {
     std::vector<Node> actual2 = g.GetNeighbors(n2);
 
     REQUIRE(areEqual(expected2, actual2));
+}
 
+TEST_CASE("BFS Tests", "[bfs]") {
+    Graph g("test");
+
+    // Below are a few requires to check for correct edges 
+    Node n1("998", "26936.0");
+    Node n2("997", "515025.0");
+
+    std::vector<Node> expected = {
+        Node ("1083", "510799.0"),
+        Node ("4406", "890558948.0"),
+        Node ("2552", "512710.0"),
+        Node ("997", "515025.0")
+    };
+
+    std::vector<Node> actual = g.BFSPath(n1, n2);
+
+    REQUIRE(areEqual(expected, actual));
+    
 }

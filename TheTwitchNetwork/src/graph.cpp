@@ -166,7 +166,7 @@ void Graph::PopulateGraph() {
 		this->AddEdge(tokens[0], tokens[1]);
 	}
 	// DEBUG:
-	PrintAdjList();
+	// PrintAdjList();
 	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
 }
 
@@ -269,11 +269,6 @@ void Graph::PrintAdjList() {
 	}
 }
 
-// create a BFS tree to find the shortest path between two nodes
-// BFS tree is a tree that is created by doing a BFS on a graph
-// the BFS tree is a tree that contains the shortest path between two nodes
-// the BFS tree is a tree that contains the shortest path between two nodes
-
 /*
  * Function to find the shortest path between two nodes
  * @param start: The starting node
@@ -289,8 +284,6 @@ std::vector<Node> Graph::BFSPath(Node start, Node end) {
 	// initialize visited map
 	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
 		visited[it->first] = false;
-
-		// initialize parent vector with empty nodes
 		parent[it->first] = Node();
 	}
 
@@ -308,7 +301,7 @@ std::vector<Node> Graph::BFSPath(Node start, Node end) {
 				q.push(*it);
 				parent[*it] = curr;
 			}
-			// if we found the end node, break out of the loop
+
 			if (*it == end) {
 				break;
 			}
