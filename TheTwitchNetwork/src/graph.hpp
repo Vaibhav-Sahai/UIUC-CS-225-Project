@@ -11,6 +11,42 @@
 #include <fstream>
 #include <iostream>
 
+// define BFS_Tree class
+class BFS_Tree {
+ public:
+  // constructor
+  BFS_Tree(Node start, Node end);
+
+  // destructor
+  ~BFS_Tree();
+
+  // function to get the BFS tree
+  std::map<Node, std::vector<Node>> GetBFSTree() const;
+
+  // function to get the shortest path
+  std::vector<Node> GetShortestPath() const;
+
+  // function to print the BFS tree
+  void PrintBFSTree();
+
+  // function to print the shortest path
+  void PrintShortestPath();
+
+  // define visited map
+  std::map<Node, bool> visited;
+
+ private:
+  // BFS tree
+  std::map<Node, std::vector<Node>> bfs_tree;
+
+  // shortest path
+  std::vector<Node> shortest_path;
+
+  // create member parent map
+  std::map<Node, Node> parent;
+  
+};
+
 // Struct that holds our node attributes
 struct Node {
     std::string alias_id;
@@ -52,9 +88,10 @@ class Graph {
         // Get std::vector<Node> from Node
         std::vector<Node> GetNeighbors(Node node) const;
 
-        void CreateBFSTree(Node root);
+        BFS_Tree CreateBFSTree(Node start, Node end);
 
         void PrintBFSTree();
+
 
     private:
         // Map to hold streamer_name to alias ID 
@@ -65,8 +102,6 @@ class Graph {
         // Our adjacency list
         std::map<Node, std::vector<Node>> adj_list;
 
-        // visited map for BFS
-        std::map<Node, bool> visited;
 
 
         // Private Helper

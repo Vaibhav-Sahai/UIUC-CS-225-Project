@@ -261,40 +261,50 @@ void Graph::PrintAdjList() {
 	}
 }
 
-// create a BFS tree from a given node in the graph
-// BFS tree is a tree that contains all nodes that are reachable from the given node
+// create a BFS tree to find the shortest path between two nodes
+// BFS tree is a tree that is created by doing a BFS on a graph
+// the BFS tree is a tree that contains the shortest path between two nodes
+// the BFS tree is a tree that contains the shortest path between two nodes
 
-void Graph::CreateBFSTree(Node root) {
+/*
+ * Function to create a BFS tree
+ * @param start: The starting node
+ * @param end: The ending node
+ * @return: A BFS tree that contains the shortest path between the start and end nodes
+*/
+
+BFS_Tree Graph::CreateBFSTree(Node start, Node end) {
+    // Create a BFS tree
+    BFS_Tree bfs_tree(start, end);
+
     // Create a queue for BFS
     std::queue<Node> queue;
 
     // Mark the current node as visited and enqueue it
-    visited[root] = true;
-    queue.push(root);
+    bfs_tree.visited[start] = true;
+    queue.push(start);
+
+    // 'i' will be used to get all adjacent vertices of a vertex
+    std::vector<Node>::iterator i;
 
     while (!queue.empty()) {
         // Dequeue a vertex from queue and print it
         Node current_node = queue.front();
         queue.pop();
 
-        // Get all adjacent vertices of the dequeued vertex s
-        // If a adjacent has not been visited, then mark it visited and enqueue it
-        for (auto it = adj_list[current_node].begin(); it != adj_list[current_node].end(); ++it) {
-            if (!visited[*it]) {
-                visited[*it] = true;
-                queue.push(*it);
+        // Get all adjacent vertices of the dequeued vertex s. If a adjacent has not been visited, then mark it visited and enqueue it
+        for (i = adj_list[current_node].begin(); i != adj_list[current_node].end(); ++i) {
+            if (!bfs_tree.visited[*i]) {
+                bfs_tree.visited[*i] = true;
+                queue.push(*i);
+                bfs_tree.parent[*i] = current_node;
             }
         }
     }
+
+    return bfs_tree;
 }
 
-// Function to print the BFS tree
-void Graph::PrintBFSTree() {
-    for (auto it = visited.begin(); it != visited.end(); ++it) {
-        std::cout << "Alias_ID: " << it->first.alias_id << ", " << "Game_ID: " << it->first.game_id << " => " << std::endl;
-        std::cout << it->second << std::endl;
-    }
-}
 
 
 
