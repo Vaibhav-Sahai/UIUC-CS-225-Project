@@ -261,69 +261,44 @@ void Graph::PrintAdjList() {
 	}
 }
 
-// Graph::Graph(const std::string& people_fpath) {
-//     //
-// }
+// create a BFS tree from a given node in the graph
+// BFS tree is a tree that contains all nodes that are reachable from the given node
 
-// void Graph::SocialGraph(const std::vector<std::string> & vertices, std::vector<std::vector<std::string>>& relations) {
-//     //
-// }
+void Graph::CreateBFSTree(Node root) {
+    // Create a queue for BFS
+    std::queue<Node> queue;
 
-// 1. load new_ids from musae_ENGB_target.csv (notstreamer_names from streamer_features.csv) into unordered_map 
-//  - use ifstream library, getline to get each new line...
-//  - use unordered_map(more efficient than normal map)
-//  - maybe map notstreamer_names from streamer_features.csvs to respective ids from musae_ENGB_target.csv later
-// 2. use ifstream, getline to go through each line's edges in musae_ENGB_edges.csv
-// - add each opposing id of edge (2x) to the respective key's value set
-// - rinse and repeat for all edges
-// void Graph::populateAdjacencyGraph(std::string ids_fpath, std::string edges_fpath) {
-//     //populate adjacency graph keys with new_ids
-//     std::string line;
-//     std::ifstream ifs_ids(ids_fpath);
-//     if (ifs_ids.is_open()) {
-//         auto temp = getline(ifs_ids.line); //get rid of first line (column headers)
-//         while(getline(ifs_ids.line)) {
-//             int curr_new_id = std::stoi(line.substr(line.find_last_of(',')+1,line.size())); //get new_id (happens to be last column)
-//             _adjacency_graph[curr_new_id] = std::set<int>(); //initialize empty set of edges in to this pair's value
-//         }
-//         ifs_ids.close();
-//     }
+    // Mark the current node as visited and enqueue it
+    visited[root] = true;
+    queue.push(root);
 
-//     line = "";
-//     //populate adjacency graph values with edges
-//     std::ifstream ifs_edges(edges_fpath, std::ifstream::in);
-//     if (ifs_edges.is_open()) {
-//         auto temp = getline(ifs_edges.line); //get rid of first line (column headers)
-//         while(getline(ifs_edges.line)) {
-//             int first_id = std::stoi(line.substr(0,line.find_last_of(',')));
-//             int second_id = std::stoi(line.substr(line.find_last_of(',')+1,line.size()));
+    while (!queue.empty()) {
+        // Dequeue a vertex from queue and print it
+        Node current_node = queue.front();
+        queue.pop();
+
+        // Get all adjacent vertices of the dequeued vertex s
+        // If a adjacent has not been visited, then mark it visited and enqueue it
+        for (auto it = adj_list[current_node].begin(); it != adj_list[current_node].end(); ++it) {
+            if (!visited[*it]) {
+                visited[*it] = true;
+                queue.push(*it);
+            }
+        }
+    }
+}
+
+// Function to print the BFS tree
+void Graph::PrintBFSTree() {
+    for (auto it = visited.begin(); it != visited.end(); ++it) {
+        std::cout << "Alias_ID: " << it->first.alias_id << ", " << "Game_ID: " << it->first.game_id << " => " << std::endl;
+        std::cout << it->second << std::endl;
+    }
+}
 
 
 
-// BFS queue
-// creating a visited set
-// add start_id to queue
-// while queue is not empty
-//  - pop front of queue
-//  - if popped id is not in visited set
-//      - add popped id to visited set
-//      - add popped id's edges to queue
-// return visited set
 
-// std::set<int> Graph::BFS(int start_id) {
-//     std::queue<int> bfs_queue;
-//     std::set<int> visited;
-//     bfs_queue.push(start_id);
-//     while(!bfs_queue.empty()) {
-//         int curr_id = bfs_queue.front();
-//         bfs_queue.pop();
-//         if (visited.find(curr_id) == visited.end()) {
-//             visited.insert(curr_id);
-//             auto curr_iter = _adjacency_graph.find(curr_id);
-//             for (auto edge : curr_iter.second) {
-//                 bfs_queue.push(edge);
-//             }
-//         }
-//     }
-//     return visited;
-// }
+
+
+

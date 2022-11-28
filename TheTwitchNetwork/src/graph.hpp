@@ -37,6 +37,7 @@ struct Node {
         this->alias_id = "";
         this->game_id = "";
     }
+
 };
 
 class Graph {
@@ -51,6 +52,10 @@ class Graph {
         // Get std::vector<Node> from Node
         std::vector<Node> GetNeighbors(Node node) const;
 
+        void CreateBFSTree(Node root);
+
+        void PrintBFSTree();
+
     private:
         // Map to hold streamer_name to alias ID 
         std::map<std::string, std::string> streamer_to_alias;
@@ -59,6 +64,9 @@ class Graph {
 
         // Our adjacency list
         std::map<Node, std::vector<Node>> adj_list;
+
+        // visited map for BFS
+        std::map<Node, bool> visited;
 
 
         // Private Helper
@@ -74,4 +82,6 @@ class Graph {
         // Debug Func
         // Print the adjacency list
         void PrintAdjList();
+
+
 };
