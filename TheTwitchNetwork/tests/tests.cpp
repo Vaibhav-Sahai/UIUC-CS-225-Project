@@ -1,9 +1,6 @@
-#include <catch2/catch_test_macros.hpp>
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
 
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <set>
-#include "graph.hpp"
-
+TEST_CASE("Test 1", "[test1]") {
+    REQUIRE(1 == 1);
+}
