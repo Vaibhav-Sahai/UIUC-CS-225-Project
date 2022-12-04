@@ -318,3 +318,90 @@ std::vector<Node> Graph::BFSPath(Node start, Node end) {
 	std::reverse(path.begin(), path.end());
 	return path;
 }
+
+// Pagerank to return node with most connections given a game name
+std::vector<Node> Graph::PageRank(std::string game_name, int num_streamers) {
+	std::vector<Node> streamers;
+	std::map<Node, int> pagerank;
+	std::map<Node, int> visited;
+	std::map<Node, int> parent;
+	std::queue<Node> q;
+
+	// initialize visited map
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		visited[it->first] = 0;
+		parent[it->first] = 0;
+	}
+
+	// add start node to queue
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		if (it->first.game_id == game_name) {
+			q.push(it->first);
+			visited[it->first] = 1;
+		}
+	}
+
+	while (!q.empty()) {
+		Node curr = q.front();
+		q.pop();
+		auto neighbors = GetNeighbors(curr);
+		for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
+			if (visited[*it] == 0) {
+				visited[*it] = 1;
+				q.push(*it);
+				parent[*it] = 1;
+			}
+		}
+	}
+
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		if (visited[it->first] == 1) {
+			streamers.push_back(it->first);
+		}
+	}
+
+	return streamers;
+}
+
+// Kruskal's algorithm to find the minimum spanning tree and create a visual graph
+std::vector<Node> Graph::Kruskal(std::string game_name) {
+	std::vector<Node> streamers;
+	std::map<Node, int> visited;
+	std::map<Node, int> parent;
+	std::queue<Node> q;
+
+	// initialize visited map
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		visited[it->first] = 0;
+		parent[it->first] = 0;
+	}
+
+	// add start node to queue
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		if (it->first.game_id == game_name) {
+			q.push(it->first);
+			visited[it->first] = 1;
+		}
+	}
+
+	while (!q.empty()) {
+		Node curr = q.front();
+		q.pop();
+		auto neighbors = GetNeighbors(curr);
+		for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
+			if (visited[*it] == 0) {
+				visited[*it] = 1;
+				q.push(*it);
+				parent[*it] = 1;
+			}
+		}
+	}
+
+	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		if (visited[it->first] == 1) {
+			streamers.push_back(it->first);
+		}
+	}
+
+	return streamers;
+}

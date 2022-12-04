@@ -60,6 +60,14 @@ class Graph {
 
         std::vector<Node> BFSPath(Node start, Node end);
 
+        std::vector<Node> FindMostPopularStreamers(int num_streamers);
+
+        std::vector<Node> PageRank(std::string game_name, int num_streamers);
+
+        std::vector<Node> Kruskal(std::string game_name); 
+
+        
+
 
     private:
         // Map to hold streamer_name to alias ID 
