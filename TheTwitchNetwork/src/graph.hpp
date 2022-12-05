@@ -64,19 +64,23 @@ class Graph {
 
         std::vector<Node> PageRank(std::string game_name, int num_streamers);
 
-        std::vector<Node> Kruskal(std::string game_name); 
+        void Kruskal(std::string game_name); 
 
-        
-
+        // Out here for test reasons
+        void AddVertex(Node streamer);
+        bool VertexInGraph(Node streamer);
 
     private:
         // Map to hold streamer_name to alias ID 
         std::map<std::string, std::string> streamer_to_alias;
         // Map to hold game_name to game ID
         std::map<std::string, std::string> game_to_game;
-
         // Our adjacency list
         std::map<Node, std::vector<Node>> adj_list;
+        // Edges in our graph
+        std::vector<std::pair<Node, Node>> edges;
+        // Map a streamerid to an unique int
+        std::map<std::string, int> streamer_to_int;
 
 
 
@@ -84,15 +88,28 @@ class Graph {
         void CreateStreamerToAliasMap(std::string path_streamer_features, std::string path_musae_ENGB_target);
         void CreateGameToIDMap(std::string path_streamer_features);
 
-        void AddVertex(Node streamer);
-        bool VertexInGraph(Node streamer);
-
         void AddEdge(std::string alias_id_1, std::string alias_id_2);
         Node GetNodeFromAlias(std::string alias_id);
+
+        void StreamerHash();
 
         // Debug Func
         // Print the adjacency list
         void PrintAdjList();
+};
+// Disjoint Set using string instead of int
 
-
+class DisjointSets {
+    public:
+        DisjointSets();
+        DisjointSets(int num_nodes);
+        int Find(int node);
+        void Union(int node1, int node2);
+        int GetNumSets();
+        void addelements(int num);
+        int size(int elem);
+    private:
+        std::vector<int> parent;
+        std::vector<int> rank;
+        int num_sets;
 };

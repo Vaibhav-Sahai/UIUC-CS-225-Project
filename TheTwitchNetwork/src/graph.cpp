@@ -6,14 +6,7 @@ Graph::Graph(std::string message) {
 	this->CreateStreamerToAliasMap("DatasetProcessing/streamer_features.csv", "DatasetProcessing/musae_ENGB_target.csv");
   	this->CreateGameToIDMap("DatasetProcessing/streamer_features.csv");
 	this->PopulateGraph();
-
-	Node n1("998", "26936.0");
-	Node n2("997", "515025.0");
-	auto res = this->BFSPath(n1, n2);
-	for (auto node : res) {
-		std::cout << node.alias_id << " " << node.game_id << std::endl;
-	}
-
+	this->Kruskal("24241.0");
 }
 
 
@@ -138,7 +131,7 @@ void Graph::PopulateGraph() {
 		
 	}
 	std::cout << "Nodes Added" << std::endl;
-	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
+	// std::cout << "Size of adj list: " << adj_list.size() << std::endl;
 
 	// use musae_ENGB_edges.csv to add edges to the graph
 
@@ -168,6 +161,9 @@ void Graph::PopulateGraph() {
 	// DEBUG:
 	// PrintAdjList();
 	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
+
+	// We also can populate the streamer hash map here
+	this->StreamerHash();
 }
 
 /*
@@ -215,6 +211,8 @@ void Graph::AddEdge(std::string alias_id_1, std::string alias_id_2) {
 	// Check if both streamers are in the graph
 	Node streamer_1 = GetNodeFromAlias(alias_id_1);
 	Node streamer_2 = GetNodeFromAlias(alias_id_2);
+
+	edges.push_back(std::make_pair(streamer_1, streamer_2));
 
 	// Add the edge to the graph
 	adj_list[streamer_1].push_back(streamer_2);
@@ -363,45 +361,104 @@ std::vector<Node> Graph::PageRank(std::string game_name, int num_streamers) {
 	return streamers;
 }
 
-// Kruskal's algorithm to find the minimum spanning tree and create a visual graph
-std::vector<Node> Graph::Kruskal(std::string game_name) {
-	std::vector<Node> streamers;
-	std::map<Node, int> visited;
-	std::map<Node, int> parent;
-	std::queue<Node> q;
+// Kruskal's algorithm to find the minimum spanning tree while adhering to a game id
+void Graph::Kruskal(std::string game_name) {
+	std::vector<std::pair<Node, Node>> mst;
+	DisjointSets ds(adj_list.size());
 
-	// initialize visited map
-	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
-		visited[it->first] = 0;
-		parent[it->first] = 0;
-	}
+	for (auto it = edges.begin(); it != edges.end(); ++it) {
+		Node u = it->first;
+		Node v = it->second;
+		// std::cout << "first: " << it->first.alias_id << " second: " << it->second.alias_id << std::endl;
+ 		// only add edge if both nodes are in the game
+		
+		if (u.game_id == game_name && v.game_id == game_name) {
+			int set_u = ds.Find(streamer_to_int[u.alias_id]);
+			int set_v = ds.Find(streamer_to_int[v.alias_id]);
 
-	// add start node to queue
-	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
-		if (it->first.game_id == game_name) {
-			q.push(it->first);
-			visited[it->first] = 1;
-		}
-	}
-
-	while (!q.empty()) {
-		Node curr = q.front();
-		q.pop();
-		auto neighbors = GetNeighbors(curr);
-		for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
-			if (visited[*it] == 0) {
-				visited[*it] = 1;
-				q.push(*it);
-				parent[*it] = 1;
+			if (set_u != set_v) {
+				mst.push_back(std::make_pair(u, v));
+				// Print out the edge
+				std::cout << u.alias_id << "-" << v.alias_id << std::endl;
+				ds.Union(set_u, set_v);
 			}
 		}
+
+	}
+}
+
+void Graph::StreamerHash() {
+	// Iterate through all streamers in the graph and default value to -1
+	for(auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		streamer_to_int[it->first.alias_id] = -1;
 	}
 
-	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
-		if (visited[it->first] == 1) {
-			streamers.push_back(it->first);
+	// convert streamer to int
+	int i = 0;
+	for(auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+		streamer_to_int[it->first.alias_id] = i;
+		i++;
+	}
+
+	// // print out the map
+	// for(auto it = streamer_to_int.begin(); it != streamer_to_int.end(); ++it) {
+	// 	std::cout << it->first << " " << it->second << std::endl;
+	// }
+}
+
+/*
+* Implementing Disjoint Set
+*/
+
+DisjointSets::DisjointSets(int n) {
+	for (int i = 0; i < n; i++) {
+		parent.push_back(i);
+		rank.push_back(-1);
+	}
+}
+
+int DisjointSets::Find(int node) {
+	if (parent[node] != node) {
+		parent[node] = Find(parent[node]);
+	}
+	return parent[node];
+}
+
+void DisjointSets::Union(int node1, int node2) {
+	int parent1 = Find(node1);
+	int parent2 = Find(node2);
+
+	if (rank[parent1] > rank[parent2]) {
+		parent[parent2] = parent1;
+	}
+	else if (rank[parent1] < rank[parent2]) {
+		parent[parent1] = parent2;
+	}
+	else {
+		parent[parent2] = parent1;
+		rank[parent1]++;
+	}
+}
+
+int DisjointSets::GetNumSets() {
+	int num_sets = 0;
+	for (int i = 0; i < parent.size(); i++) {
+		if (parent[i] == i) {
+			num_sets++;
 		}
 	}
+	return num_sets;
+}
 
-	return streamers;
+// TEST functions
+void DisjointSets::addelements(int num) {
+    for (int i = 0; i < num; i++) {
+        rank.push_back(-1);
+    }
+}
+
+int DisjointSets::size(int elem) {
+    int root = Find(elem);
+    int return_val = rank[root];
+    return return_val * -1;
 }

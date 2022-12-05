@@ -74,7 +74,11 @@ TEST_CASE("BFS Tests", "[bfs]") {
     };
 
     std::vector<Node> actual = g.BFSPath(n1, n2);
-
     REQUIRE(areEqual(expected, actual));
-    
 }
+
+// TEST_CASE("Kruskal Test", "[kruskal]") {
+//     Graph g("test");
+
+//     Node n1("998", "26936.0");
+// }
