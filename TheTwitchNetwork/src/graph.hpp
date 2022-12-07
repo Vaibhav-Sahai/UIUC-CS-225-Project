@@ -62,7 +62,7 @@ class Graph {
 
         std::vector<Node> FindMostPopularStreamers(int num_streamers);
 
-        std::vector<Node> PageRank(std::string game_name, int num_streamers);
+        Node PageRank(std::string game_name);
 
         void Kruskal(std::string game_name); 
 
