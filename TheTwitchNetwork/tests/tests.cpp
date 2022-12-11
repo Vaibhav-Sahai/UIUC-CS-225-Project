@@ -51,37 +51,37 @@ bool areEqualKruskal(std::vector<std::pair<Node, Node>> first, std::vector<std::
 }
 
 
-// TEST_CASE("PopulateGraph Tests", "[populate]") {
-//     std::vector<std::pair<std::string, std::string>> streamer_vect = csv2streamer("DatasetProcessing/streamer_features.csv");
-// 	std::vector<std::pair<std::string, std::string>> edge_vect = csv2edge("DatasetProcessing/musae_ENGB_edges.csv");
+TEST_CASE("PopulateGraph Tests", "[populate]") {
+    std::vector<std::pair<std::string, std::string>> streamer_vect = csv2streamer("DatasetProcessing/streamer_features.csv");
+	std::vector<std::pair<std::string, std::string>> edge_vect = csv2edge("DatasetProcessing/musae_ENGB_edges.csv");
 
-//     Graph g(streamer_vect, edge_vect);
+    Graph g(streamer_vect, edge_vect);
 
-//     // Below are a few requires to check for correct edges 
-//     Node n1("998", "26936.0");
-//     std::vector<Node> expected = {
-//         Node ("1083", "510799.0")
-//     };
+    // Below are a few requires to check for correct edges 
+    Node n1("998", "26936.0");
+    std::vector<Node> expected = {
+        Node ("1083", "510799.0")
+    };
 
-//     std::vector<Node> actual = g.GetNeighbors(n1);
+    std::vector<Node> actual = g.GetNeighbors(n1);
 
-//     REQUIRE(areEqual(expected, actual));
+    REQUIRE(areEqualBFS(expected, actual));
 
-//     Node n2("999", "506237.0");
+    Node n2("999", "506237.0");
 
-//     std::vector<Node> expected2 = {
-//         Node ("93", "517072.0"),
-//         Node ("841", "511746.0"),
-//         Node ("4649", "493597.0"),
-//         Node ("5882", "515025.0"),
-//         Node ("6867", "509658.0"),
-//         Node ("2974", "1478010775.0")
-//     };
+    std::vector<Node> expected2 = {
+        Node ("93", "517072.0"),
+        Node ("841", "511746.0"),
+        Node ("4649", "493597.0"),
+        Node ("5882", "515025.0"),
+        Node ("6867", "509658.0"),
+        Node ("2974", "1478010775.0")
+    };
 
-//     std::vector<Node> actual2 = g.GetNeighbors(n2);
+    std::vector<Node> actual2 = g.GetNeighbors(n2);
 
-//     REQUIRE(areEqual(expected2, actual2));
-// }
+    REQUIRE(areEqualBFS(expected2, actual2));
+}
 
 TEST_CASE("BFS Tests - Simple", "[bfseasy]") {
     std::vector<std::pair<std::string, std::string>> streamer_vect = {
