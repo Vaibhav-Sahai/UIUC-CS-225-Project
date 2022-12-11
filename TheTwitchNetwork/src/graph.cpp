@@ -20,10 +20,11 @@ Graph::Graph(std::vector<std::pair<std::string, std::string>> streamers, std::ve
 	for (unsigned int i = 0; i < edges.size(); i++) {
 		this->AddEdge(edges[i].first, edges[i].second);
 	}
+	this->StreamerHash();
 
 	// DEBUG:
-	std::cout << "Size of adj_list: " << adj_list.size() << std::endl;
-	this->PrintAdjList();
+	// std::cout << "Size of adj_list: " << adj_list.size() << std::endl;
+	// this->PrintAdjList();
 }
 
 
@@ -375,9 +376,7 @@ std::vector<std::pair<Node, Node>> Graph::Kruskal(std::string game_name) {
 	for (auto it = edges.begin(); it != edges.end(); ++it) {
 		Node u = it->first;
 		Node v = it->second;
-		// std::cout << "first: " << it->first.alias_id << " second: " << it->second.alias_id << std::endl;
  		// only add edge if both nodes are in the game
-		
 		if (u.game_id == game_name && v.game_id == game_name) {
 			int set_u = ds.Find(streamer_to_int[u.alias_id]);
 			int set_v = ds.Find(streamer_to_int[v.alias_id]);
@@ -385,9 +384,9 @@ std::vector<std::pair<Node, Node>> Graph::Kruskal(std::string game_name) {
 			if (set_u != set_v) {
 				mst.push_back(std::make_pair(u, v));
 				// Print out the edge
-				std::cout << u.alias_id << "-" << v.alias_id << std::endl;
+				// std::cout << u.alias_id << "-" << v.alias_id << std::endl;
 				ds.Union(set_u, set_v);
-			}
+			} 
 		}
 
 	}

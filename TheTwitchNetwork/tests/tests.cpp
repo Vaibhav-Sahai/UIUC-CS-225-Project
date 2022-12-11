@@ -14,7 +14,7 @@
 * Test Functions *
 */
 
-bool areEqual(std::vector<Node>& first, std::vector<Node>& second) {
+bool areEqualBFS(std::vector<Node>& first, std::vector<Node>& second) {
     if (first.size() != second.size()) {
         return false;
     }
@@ -23,6 +23,27 @@ bool areEqual(std::vector<Node>& first, std::vector<Node>& second) {
             return false;
         }
         if (first[i].game_id != second[i].game_id) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool areEqualKruskal(std::vector<std::pair<Node, Node>> first, std::vector<std::pair<Node, Node>> second) {
+    if (first.size() != second.size()) {
+        return false;
+    }
+    for (int i = 0; i < first.size(); i++) {
+        if (first[i].first.alias_id != second[i].first.alias_id) {
+            return false;
+        }
+        if (first[i].first.game_id != second[i].first.game_id) {
+            return false;
+        }
+        if (first[i].second.alias_id != second[i].second.alias_id) {
+            return false;
+        }
+        if (first[i].second.game_id != second[i].second.game_id) {
             return false;
         }
     }
@@ -87,7 +108,7 @@ TEST_CASE("BFS Tests - Simple", "[bfs]") {
         Node("C", "GOW")
     };
 
-    REQUIRE(areEqual(path, expected));
+    REQUIRE(areEqualBFS(path, expected));
 
     edge_vect = {
         std::make_pair("A", "B"),
@@ -105,7 +126,7 @@ TEST_CASE("BFS Tests - Simple", "[bfs]") {
         Node("C", "GOW")
     };
 
-    REQUIRE(areEqual(path2, expected2));
+    REQUIRE(areEqualBFS(path2, expected2));
 
     edge_vect = {
         std::make_pair("A", "B")
@@ -119,7 +140,7 @@ TEST_CASE("BFS Tests - Simple", "[bfs]") {
 
     std::vector<Node> expected3 = {};
 
-    REQUIRE(areEqual(path3, expected3));
+    REQUIRE(areEqualBFS(path3, expected3));
 }
 
 TEST_CASE("BFS Tests - Complex", "[bfs]") {
@@ -153,12 +174,12 @@ TEST_CASE("BFS Tests - Complex", "[bfs]") {
 
     std::vector<Node> expected = {};
 
-    REQUIRE(areEqual(path, expected));
+    REQUIRE(areEqualBFS(path, expected));
 
     std::vector<Node> path2 = g.BFSPath(Node("A", "GOW"), Node("D", "ER"));
 
     // No such path exists
-    REQUIRE(areEqual(path2, expected));
+    REQUIRE(areEqualBFS(path2, expected));
 
     std::vector<Node> path3 = g.BFSPath(Node("A", "GOW"), Node("C", "GOW"));
 
@@ -167,7 +188,7 @@ TEST_CASE("BFS Tests - Complex", "[bfs]") {
         Node("C", "GOW")
     };
 
-    REQUIRE(areEqual(path3, expected3));
+    REQUIRE(areEqualBFS(path3, expected3));
 
     std::vector<Node> path4 = g.BFSPath(Node("A", "GOW"), Node("B", "GOW"));
 
@@ -177,8 +198,50 @@ TEST_CASE("BFS Tests - Complex", "[bfs]") {
         Node("B", "GOW")
     };
 
-    REQUIRE(areEqual(path4, expected4));
+    REQUIRE(areEqualBFS(path4, expected4));
 
+}
+
+TEST_CASE("Kruskal Tests - Simple", "[kruskal]") {
+    std::vector<std::pair<std::string, std::string>> streamer_vect = {
+        std::make_pair("A", "GOW"),
+        std::make_pair("B", "GOW"),
+        std::make_pair("C", "GOW"),
+        std::make_pair("D", "ER"),
+        std::make_pair("E", "ER")
+    };
+
+    std::vector<std::pair<std::string, std::string>> edge_vect = {
+        std::make_pair("A", "B"),
+        std::make_pair("B", "C"),
+        std::make_pair("C", "A"),
+    };
+
+    // Graph looks like this (undirected):
+    // A connected to B
+    // B connected to C
+    // C connected to A
+    // D has no connections
+    // E has no connections
+
+    Graph g(streamer_vect, edge_vect);
+
+    std::vector<std::pair<Node, Node>> mst = g.Kruskal("GOW");
+
+    std::cout << "Printing MST: " << std::endl;
+    // print mst
+    for (auto i : mst) {
+        std::cout << i.first.alias_id << " " << i.second.game_id << std::endl;
+    }
+
+    // MST should be A->B and B->C
+
+    std::vector<std::pair<Node, Node>> expected = {
+        std::make_pair(Node("A", "GOW"), Node("B", "GOW")),
+        std::make_pair(Node("B", "GOW"), Node("C", "GOW"))
+    };
+
+    REQUIRE(areEqualKruskal(mst, expected));
 }
 
 // TEST_CASE("Kruskal Test", "[kruskal]") {
