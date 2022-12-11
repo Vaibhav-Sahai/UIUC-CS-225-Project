@@ -4,10 +4,11 @@
 using namespace std;
 
 int main() {
-  Graph g("Hello World!");
-  // std::vector<Node> res = g.Kruskal("512341.0");
-  // for (unsigned int i = 0; i < res.size(); i++) {
-  //   cout << res[i].alias_id << endl;
-  // }
+  // Graph g("Hello World!");
+  std::vector<std::pair<std::string, std::string>> streamer_vect = csv2streamer("DatasetProcessing/streamer_features.csv");
+	std::vector<std::pair<std::string, std::string>> edge_vect = csv2edge("DatasetProcessing/musae_ENGB_edges.csv");
+
+  Graph g(streamer_vect, edge_vect);
+
   return 0;
 }

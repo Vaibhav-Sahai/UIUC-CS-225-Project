@@ -14,7 +14,7 @@
 // Functions to parse a csv to a string vector
 
 std::vector<std::pair<std::string, std::string>> csv2streamer(std::string path);
-
+std::vector<std::pair<std::string, std::string>> csv2edge(std::string path);
 // Struct that holds our node attributes
 struct Node {
     std::string alias_id;
@@ -51,7 +51,6 @@ struct Node {
 
 class Graph {
     public:
-        Graph(std::string message);
 
         // Our parameterized constructor that takes in 2 vectors, one for streamer names paired with game_id and one for edges
         Graph(std::vector<std::pair<std::string, std::string>> streamers, std::vector<std::pair<std::string, std::string>> edges);

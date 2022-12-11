@@ -1,13 +1,6 @@
 #include "graph.hpp"
 #include <iostream>
 
-Graph::Graph(std::string message) {
-	std::cout << message << std::endl;
-	this->CreateStreamerToAliasMap("DatasetProcessing/streamer_features.csv", "DatasetProcessing/musae_ENGB_target.csv");
-  	this->CreateGameToIDMap("DatasetProcessing/streamer_features.csv");
-	this->PopulateGraph();
-	// this->Kruskal("24241.0");
-}
 
 /*
  * Parameterized constructor for Graph
@@ -15,6 +8,8 @@ Graph::Graph(std::string message) {
  * @param edges: Vector of edges
 */
 Graph::Graph(std::vector<std::pair<std::string, std::string>> streamers, std::vector<std::pair<std::string, std::string>> edges) {
+	this->CreateStreamerToAliasMap("DatasetProcessing/streamer_features.csv", "DatasetProcessing/musae_ENGB_target.csv");
+  	this->CreateGameToIDMap("DatasetProcessing/streamer_features.csv");
 	// Iterate through the streamers vector and add each streamer to the graph
 	for (unsigned int i = 0; i < streamers.size(); i++) {
 		Node streamer(streamers[i].first, streamers[i].second);
@@ -28,7 +23,7 @@ Graph::Graph(std::vector<std::pair<std::string, std::string>> streamers, std::ve
 
 	// DEBUG:
 	std::cout << "Size of adj_list: " << adj_list.size() << std::endl;
-	// this->PrintAdjList();
+	this->PrintAdjList();
 }
 
 
@@ -396,6 +391,7 @@ std::vector<std::pair<Node, Node>> Graph::Kruskal(std::string game_name) {
 		}
 
 	}
+	return mst;
 }
 
 void Graph::StreamerHash() {
@@ -415,6 +411,83 @@ void Graph::StreamerHash() {
 	// for(auto it = streamer_to_int.begin(); it != streamer_to_int.end(); ++it) {
 	// 	std::cout << it->first << " " << it->second << std::endl;
 	// }
+}
+
+/*
+ * Function to take a csv path and convert it to a vector of pairs
+ * @param path: The path to the csv file
+ * @return: A vector of pairs that contains the streamer and game
+*/
+std::vector<std::pair<std::string, std::string>> csv2streamer(std::string path) {
+	std::ifstream streamer_features(path);
+	std::string line = "";
+
+	std::vector<std::pair<std::string, std::string>> streamers;
+
+	// Skip the first line
+	std::getline(streamer_features, line);
+
+	while (std::getline(streamer_features, line)) {
+		std::string delimiter = ",";
+		size_t pos = 0;
+		std::string token;
+		std::vector<std::string> tokens;
+
+		while ((pos = line.find(delimiter)) != std::string::npos) {
+			token = line.substr(0, pos);
+			tokens.push_back(token);
+			line.erase(0, pos + delimiter.length());
+		}
+
+		// Add the last token
+		tokens.push_back(line);
+
+		// Create the node, add it to the graph
+		// alias_id is always the last element in our sentence, so we can use line for that
+		// game_id is always the 3rd element in our array
+		// NOTE: We would've to deal with ',' if this arrangement ever changes
+		streamers.push_back(std::make_pair(line, tokens[2]));
+	}
+	return streamers;
+}
+
+/*
+ * Function to take a csv path for edges and convert it to a vector of pairs
+ * @param path: The path to the csv file
+ * @return: A vector of pairs that contains the streamer and game
+*/
+
+std::vector<std::pair<std::string, std::string>> csv2edge(std::string path) {
+	std::ifstream streamer_features(path);
+	std::string line = "";
+
+	std::vector<std::pair<std::string, std::string>> edges;
+
+	// Skip the first line
+	std::getline(streamer_features, line);
+
+	while (std::getline(streamer_features, line)) {
+		std::string delimiter = ",";
+		size_t pos = 0;
+		std::string token;
+		std::vector<std::string> tokens;
+
+		while ((pos = line.find(delimiter)) != std::string::npos) {
+			token = line.substr(0, pos);
+			tokens.push_back(token);
+			line.erase(0, pos + delimiter.length());
+		}
+
+		// Add the last token
+		tokens.push_back(line);
+
+		// Create the node, add it to the graph
+		// alias_id is always the last element in our sentence, so we can use line for that
+		// game_id is always the 3rd element in our array
+		// NOTE: We would've to deal with ',' if this arrangement ever changes
+		edges.push_back(std::make_pair(tokens[0], tokens[1]));
+	}
+	return edges;
 }
 
 /*

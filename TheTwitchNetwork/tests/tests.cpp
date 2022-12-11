@@ -31,7 +31,10 @@ bool areEqual(std::vector<Node>& first, std::vector<Node>& second) {
 
 
 TEST_CASE("PopulateGraph Tests", "[populate]") {
-    Graph g("test");
+    std::vector<std::pair<std::string, std::string>> streamer_vect = csv2streamer("DatasetProcessing/streamer_features.csv");
+	std::vector<std::pair<std::string, std::string>> edge_vect = csv2edge("DatasetProcessing/musae_ENGB_edges.csv");
+
+    Graph g(streamer_vect, edge_vect);
 
     // Below are a few requires to check for correct edges 
     Node n1("998", "26936.0");
@@ -60,7 +63,10 @@ TEST_CASE("PopulateGraph Tests", "[populate]") {
 }
 
 TEST_CASE("BFS Tests", "[bfs]") {
-    Graph g("test");
+    std::vector<std::pair<std::string, std::string>> streamer_vect = csv2streamer("DatasetProcessing/streamer_features.csv");
+	std::vector<std::pair<std::string, std::string>> edge_vect = csv2edge("DatasetProcessing/musae_ENGB_edges.csv");
+
+    Graph g(streamer_vect, edge_vect);
 
     // Below are a few requires to check for correct edges 
     Node n1("998", "26936.0");
