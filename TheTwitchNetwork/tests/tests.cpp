@@ -329,3 +329,40 @@ TEST_CASE("FindMostPopularStreamer Tests - Simple", "[findmostpopulareasy]") {
     REQUIRE(most_popular2 == Node("D", "ER"));
 }
 
+TEST_CASE("FindMostPopularStreamer Tests - Complex", "[findmostpopularhard]") {
+    std::vector<std::pair<std::string, std::string>> streamer_vect = {
+        std::make_pair("A", "GOW"),
+        std::make_pair("B", "GOW"),
+        std::make_pair("C", "GOW"),
+        std::make_pair("D", "ER"),
+        std::make_pair("E", "ER")
+    };
+
+    std::vector<std::pair<std::string, std::string>> edge_vect = {
+        std::make_pair("A", "B"),
+        std::make_pair("C", "A"),
+        std::make_pair("B", "C"),
+        std::make_pair("D", "E")
+    };
+
+    // Graph looks like this (undirected):
+    // A connected to B and C
+    // B connected to A and C
+    // C connected to A and B
+    // D connected to E
+    // E connected to D
+
+    Graph g(streamer_vect, edge_vect);
+
+    Node most_popular = g.FindMostPopularStreamer("ER");
+
+    // Most popular streamer should be D
+
+    REQUIRE(most_popular == Node("D", "ER"));
+
+    Node most_popular2 = g.FindMostPopularStreamer("No Game");
+
+    // Most popular streamer should be D
+
+    REQUIRE(most_popular2 == Node("", ""));
+}
