@@ -23,12 +23,12 @@ Our project was successful as we were able to accomplish this goal and answer th
     Input: Game Name (String type).   
     Goal: To find the most popular streamer for a given game (Streamer with most connections).   
     Output: A node that represents the most popular streamer.
-    Test: Manually identified the most popular streamer in the dataset and compared it with the output of the function.   
+    Test: Have a simple and complex graph that is compared with the function output.
 
 
 ### Kruskal's Algorithm :   
     Input: Game Name (String type).   
     Goal: To create an MST that can be converted to a graph for a visual output.   
     Output: No Output.   
-    Test: 
+    Test: Compare the output of the function with a simple, undirected graph.
 
