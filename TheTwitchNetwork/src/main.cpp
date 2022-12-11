@@ -34,5 +34,12 @@ int main() {
   //   std::cout << kruskal_result[i].first.alias_id << " " << kruskal_result[i].first.game_id << " " << kruskal_result[i].second.alias_id << " " << kruskal_result[i].second.game_id << std::endl;
   // }
 
+  // An example of pagerank is shown below
+
+  // Node pagerank_result = g.FindPopularStreamer(game_id[*Insert Game Here*]);
+
+  // std::cout << pagerank_result.alias_id << " " << pagerank_result.game_id << std::endl;
+
+
   return 0;
 }
