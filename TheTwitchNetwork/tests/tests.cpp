@@ -228,12 +228,6 @@ TEST_CASE("Kruskal Tests - Simple", "[kruskal]") {
 
     std::vector<std::pair<Node, Node>> mst = g.Kruskal("GOW");
 
-    std::cout << "Printing MST: " << std::endl;
-    // print mst
-    for (auto i : mst) {
-        std::cout << i.first.alias_id << " " << i.second.game_id << std::endl;
-    }
-
     // MST should be A->B and B->C
 
     std::vector<std::pair<Node, Node>> expected = {
@@ -242,10 +236,56 @@ TEST_CASE("Kruskal Tests - Simple", "[kruskal]") {
     };
 
     REQUIRE(areEqualKruskal(mst, expected));
+
+    std::vector<std::pair<Node, Node>> mst2 = g.Kruskal("ER");
+
+    // MST should be empty as no connections exist
+
+    std::vector<std::pair<Node, Node>> expected2 = {};
+
+    REQUIRE(areEqualKruskal(mst2, expected2));
 }
 
-// TEST_CASE("Kruskal Test", "[kruskal]") {
-//     Graph g("test");
+TEST_CASE("Kruskal Tests - Complex", "[kruskal]") {
+    std::vector<std::pair<std::string, std::string>> streamer_vect = {
+        std::make_pair("A", "GOW"),
+        std::make_pair("B", "GOW"),
+        std::make_pair("C", "GOW"),
+        std::make_pair("D", "ER"),
+        std::make_pair("E", "ER")
+    };
 
-//     Node n1("998", "26936.0");
-// }
+    std::vector<std::pair<std::string, std::string>> edge_vect = {
+        std::make_pair("A", "B"),
+        std::make_pair("C", "A"),
+        std::make_pair("B", "C"),
+        std::make_pair("D", "E")
+    };
+
+    // Graph looks like this (undirected):
+    // A connected to B and C
+    // B connected to A and C
+    // C connected to A and B
+    // D connected to E
+    // E connected to D
+
+    Graph g(streamer_vect, edge_vect);
+
+    std::vector<std::pair<Node, Node>> mst = g.Kruskal("ER");
+
+    // MST should be D->E
+
+    std::vector<std::pair<Node, Node>> expected = {
+        std::make_pair(Node("D", "ER"), Node("E", "ER"))
+    };
+
+    REQUIRE(areEqualKruskal(mst, expected));
+
+    std::vector<std::pair<Node, Node>> mst2 = g.Kruskal("No Game");
+
+    // MST should be empty as no such game is in the graph
+
+    std::vector<std::pair<Node, Node>> expected2 = {};
+
+    REQUIRE(areEqualKruskal(mst2, expected2));
+}
