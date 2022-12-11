@@ -77,6 +77,10 @@ class Graph {
         // Print the adjacency list
         void PrintAdjList();
 
+        // Getters for our maps
+        std::map<std::string, std::string> GetStreamerToAliasMap() const;
+        std::map<std::string, std::string> GetGameToGameMap() const;
+
     private:
         // Map to hold streamer_name to alias ID 
         std::map<std::string, std::string> streamer_to_alias;

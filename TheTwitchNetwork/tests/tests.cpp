@@ -83,7 +83,7 @@ bool areEqualKruskal(std::vector<std::pair<Node, Node>> first, std::vector<std::
 //     REQUIRE(areEqual(expected2, actual2));
 // }
 
-TEST_CASE("BFS Tests - Simple", "[bfs]") {
+TEST_CASE("BFS Tests - Simple", "[bfseasy]") {
     std::vector<std::pair<std::string, std::string>> streamer_vect = {
         std::make_pair("A", "GOW"),
         std::make_pair("B", "GOW"),
@@ -143,7 +143,7 @@ TEST_CASE("BFS Tests - Simple", "[bfs]") {
     REQUIRE(areEqualBFS(path3, expected3));
 }
 
-TEST_CASE("BFS Tests - Complex", "[bfs]") {
+TEST_CASE("BFS Tests - Complex", "[bfshard]") {
     std::vector<std::pair<std::string, std::string>> streamer_vect = {
         std::make_pair("A", "GOW"),
         std::make_pair("B", "GOW"),
@@ -202,7 +202,7 @@ TEST_CASE("BFS Tests - Complex", "[bfs]") {
 
 }
 
-TEST_CASE("Kruskal Tests - Simple", "[kruskal]") {
+TEST_CASE("Kruskal Tests - Simple", "[kruskaleasy]") {
     std::vector<std::pair<std::string, std::string>> streamer_vect = {
         std::make_pair("A", "GOW"),
         std::make_pair("B", "GOW"),
@@ -246,7 +246,7 @@ TEST_CASE("Kruskal Tests - Simple", "[kruskal]") {
     REQUIRE(areEqualKruskal(mst2, expected2));
 }
 
-TEST_CASE("Kruskal Tests - Complex", "[kruskal]") {
+TEST_CASE("Kruskal Tests - Complex", "[kruskalhard]") {
     std::vector<std::pair<std::string, std::string>> streamer_vect = {
         std::make_pair("A", "GOW"),
         std::make_pair("B", "GOW"),
@@ -289,3 +289,5 @@ TEST_CASE("Kruskal Tests - Complex", "[kruskal]") {
 
     REQUIRE(areEqualKruskal(mst2, expected2));
 }
+
+// TEST_CASE("PageRank Tests", "[pagerank]")

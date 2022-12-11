@@ -393,6 +393,17 @@ std::vector<std::pair<Node, Node>> Graph::Kruskal(std::string game_name) {
 	return mst;
 }
 
+/*
+ * Functions to get streamer alias map
+*/
+
+std::map<std::string, std::string> Graph::GetStreamerToAliasMap() const {
+	return streamer_to_alias;
+}
+std::map<std::string, std::string> Graph::GetGameToGameMap() const {
+	return game_to_game;
+}
+
 void Graph::StreamerHash() {
 	// Iterate through all streamers in the graph and default value to -1
 	for(auto it = adj_list.begin(); it != adj_list.end(); ++it) {
