@@ -36,7 +36,7 @@ int main() {
 
   // An example of pagerank is shown below
 
-  // Node pagerank_result = g.FindPopularStreamer(game_id[*Insert Game Here*]);
+  // Node pagerank_result = g.FindMostPopularStreamer(game_id[*Insert Game Here*]);
 
   // std::cout << pagerank_result.alias_id << " " << pagerank_result.game_id << std::endl;
 
