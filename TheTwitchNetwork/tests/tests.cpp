@@ -62,7 +62,7 @@ bool areEqual(std::vector<Node>& first, std::vector<Node>& second) {
 //     REQUIRE(areEqual(expected2, actual2));
 // }
 
-TEST_CASE("BFS Tests", "[bfs]") {
+TEST_CASE("BFS Tests - Simple", "[bfs]") {
     std::vector<std::pair<std::string, std::string>> streamer_vect = {
         std::make_pair("A", "GOW"),
         std::make_pair("B", "GOW"),
@@ -86,11 +86,7 @@ TEST_CASE("BFS Tests", "[bfs]") {
     std::vector<Node> expected = {
         Node("C", "GOW")
     };
-    // print path
-    std::cout << "Printing Found Path: " << std::endl;
-    for (int i = 0; i < path.size(); i++) {
-        std::cout << path[i].alias_id << " " << std::endl;
-    }
+
     REQUIRE(areEqual(path, expected));
 
     edge_vect = {
@@ -109,31 +105,80 @@ TEST_CASE("BFS Tests", "[bfs]") {
         Node("C", "GOW")
     };
 
-    // print path
-    std::cout << "Printing Found Path: " << std::endl;
-    for (int i = 0; i < path2.size(); i++) {
-        std::cout << path2[i].alias_id << " " << std::endl;
-    }
     REQUIRE(areEqual(path2, expected2));
 
-    // std::vector<std::pair<std::string, std::string>> streamer_vect = csv2streamer("DatasetProcessing/streamer_features.csv");
-	// std::vector<std::pair<std::string, std::string>> edge_vect = csv2edge("DatasetProcessing/musae_ENGB_edges.csv");
+    edge_vect = {
+        std::make_pair("A", "B")
+    };
 
-    // Graph g(streamer_vect, edge_vect);
+    // Here, no path to C exists as we've a disconnected graph (A->B, but C, D, E have no edges)
 
-    // // Below are a few requires to check for correct edges 
-    // Node n1("998", "26936.0");
-    // Node n2("997", "515025.0");
+    Graph g3(streamer_vect, edge_vect);
 
-    // std::vector<Node> expected = {
-    //     Node ("1083", "510799.0"),
-    //     Node ("4406", "890558948.0"),
-    //     Node ("2552", "512710.0"),
-    //     Node ("997", "515025.0")
-    // };
+    std::vector<Node> path3 = g3.BFSPath(Node("A", "GOW"), Node("C", "GOW"));
 
-    // std::vector<Node> actual = g.BFSPath(n1, n2);
-    // REQUIRE(areEqual(expected, actual));
+    std::vector<Node> expected3 = {};
+
+    REQUIRE(areEqual(path3, expected3));
+}
+
+TEST_CASE("BFS Tests - Complex", "[bfs]") {
+    std::vector<std::pair<std::string, std::string>> streamer_vect = {
+        std::make_pair("A", "GOW"),
+        std::make_pair("B", "GOW"),
+        std::make_pair("C", "GOW"),
+        std::make_pair("D", "ER"),
+        std::make_pair("E", "ER")
+    };
+
+    std::vector<std::pair<std::string, std::string>> edge_vect = {
+        std::make_pair("A", "B"),
+        std::make_pair("C", "A"),
+        std::make_pair("B", "C"),
+        std::make_pair("D", "E")
+    };
+
+    // Graph looks like this (undirected):
+    // A connected to B and C
+    // B connected to A and C
+    // C connected to A and B
+    // D connected to E
+    // E connected to D
+
+    Graph g(streamer_vect, edge_vect);
+
+    std::vector<Node> path = g.BFSPath(Node("A", "GOW"), Node("E", "ER"));
+
+    // No such path exists
+
+    std::vector<Node> expected = {};
+
+    REQUIRE(areEqual(path, expected));
+
+    std::vector<Node> path2 = g.BFSPath(Node("A", "GOW"), Node("D", "ER"));
+
+    // No such path exists
+    REQUIRE(areEqual(path2, expected));
+
+    std::vector<Node> path3 = g.BFSPath(Node("A", "GOW"), Node("C", "GOW"));
+
+    // Connection A->C exists
+    std::vector<Node> expected3 = {
+        Node("C", "GOW")
+    };
+
+    REQUIRE(areEqual(path3, expected3));
+
+    std::vector<Node> path4 = g.BFSPath(Node("A", "GOW"), Node("B", "GOW"));
+
+    // Connection A->B exists
+
+    std::vector<Node> expected4 = {
+        Node("B", "GOW")
+    };
+
+    REQUIRE(areEqual(path4, expected4));
+
 }
 
 // TEST_CASE("Kruskal Test", "[kruskal]") {

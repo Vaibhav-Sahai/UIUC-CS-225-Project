@@ -73,6 +73,10 @@ class Graph {
         void AddVertex(Node streamer);
         bool VertexInGraph(Node streamer);
 
+        // Debug Func
+        // Print the adjacency list
+        void PrintAdjList();
+
     private:
         // Map to hold streamer_name to alias ID 
         std::map<std::string, std::string> streamer_to_alias;
@@ -93,10 +97,6 @@ class Graph {
         Node GetNodeFromAlias(std::string alias_id);
 
         void StreamerHash();
-
-        // Debug Func
-        // Print the adjacency list
-        void PrintAdjList();
 };
 
 
