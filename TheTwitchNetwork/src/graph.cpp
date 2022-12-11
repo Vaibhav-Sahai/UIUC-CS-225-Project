@@ -335,33 +335,54 @@ std::vector<Node> Graph::BFSPath(Node start, Node end) {
 	return path;
 }
 
-// Pagerank to return node with most connections given a game name
-Node Graph::PageRank(std::string game_name) {
-	//get node from given game name
-	Node game_node = GetNodeFromAlias(game_name);
 
-	//get all neighbors of game node
-	std::vector<Node> neighbors = GetNeighbors(game_node);
+/*
+ * Function to find the most popular streamer
+ * @param game_name: The name of the game to find the most popular streamer for
+ * @return: The most popular streamer in the given game
+*/
 
-	Node popular;
+Node Graph::FindMostPopularStreamer(std::string game_name) {
+    // Create a map of streamers to their pagerank
+    std::map<Node, double> pagerank;
+    // Create a map of streamers to their outdegree
+    std::map<Node, int> outdegree;
 
-	//get most popular neighbor
-	for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
-		if (it->alias_id == game_name) {
-			continue;
-		}
-		if (it->alias_id == popular.alias_id) {
-			continue;
-		}
-		if (it->alias_id != popular.alias_id) {
-			if (GetNeighbors(*it).size() > GetNeighbors(popular).size()) {
-				popular = *it;
-			}
-		}
-	}
+    // Initialize pagerank and outdegree maps
+    for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+        pagerank[it->first] = 1.0 / adj_list.size();
+        outdegree[it->first] = it->second.size();
+    }
 
-	return popular;
+    // Run pagerank algorithm
+    for (int i = 0; i < 100; ++i) {
+        std::map<Node, double> new_pagerank;
+        for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
+            double sum = 0.0;
+            for (auto it2 = adj_list.begin(); it2 != adj_list.end(); ++it2) {
+                // Check if it2 is a neighbor of it
+                if (std::find(it2->second.begin(), it2->second.end(), it->first) != it2->second.end()) {
+                    sum += pagerank[it2->first] / outdegree[it2->first];
+                }
+            }
+            new_pagerank[it->first] = 0.15 / adj_list.size() + 0.85 * sum;
+        }
+        pagerank = new_pagerank;
+    }
+
+    // Find the streamer with the highest pagerank
+    Node most_popular_streamer;
+    double max_pagerank = 0.0;
+    for (auto it = pagerank.begin(); it != pagerank.end(); ++it) {
+        if (it->first.game_id == game_name && it->second > max_pagerank) {
+            most_popular_streamer = it->first;
+            max_pagerank = it->second;
+        }
+    }
+
+    return most_popular_streamer;
 }
+
 
 
 /*

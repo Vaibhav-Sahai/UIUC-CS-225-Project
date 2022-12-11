@@ -290,4 +290,42 @@ TEST_CASE("Kruskal Tests - Complex", "[kruskalhard]") {
     REQUIRE(areEqualKruskal(mst2, expected2));
 }
 
-// TEST_CASE("PageRank Tests", "[pagerank]")
+// FindMostPopularStreamer Tests - Simple
+
+TEST_CASE("FindMostPopularStreamer Tests - Simple", "[findmostpopulareasy]") {
+    std::vector<std::pair<std::string, std::string>> streamer_vect = {
+        std::make_pair("A", "GOW"),
+        std::make_pair("B", "GOW"),
+        std::make_pair("C", "GOW"),
+        std::make_pair("D", "ER"),
+        std::make_pair("E", "ER")
+    };
+
+    std::vector<std::pair<std::string, std::string>> edge_vect = {
+        std::make_pair("A", "B"),
+        std::make_pair("B", "C"),
+        std::make_pair("C", "A"),
+    };
+
+    // Graph looks like this (undirected):
+    // A connected to B
+    // B connected to C
+    // C connected to A
+    // D has no connections
+    // E has no connections
+
+    Graph g(streamer_vect, edge_vect);
+
+    Node most_popular = g.FindMostPopularStreamer("GOW");
+
+    // Most popular streamer should be A
+
+    REQUIRE(most_popular == Node("A", "GOW"));
+
+    Node most_popular2 = g.FindMostPopularStreamer("ER");
+
+    // Most popular streamer should be D
+
+    REQUIRE(most_popular2 == Node("D", "ER"));
+}
+
