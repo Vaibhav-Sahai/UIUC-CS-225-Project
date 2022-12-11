@@ -21,10 +21,6 @@ Graph::Graph(std::vector<std::pair<std::string, std::string>> streamers, std::ve
 		this->AddEdge(edges[i].first, edges[i].second);
 	}
 	this->StreamerHash();
-
-	// DEBUG:
-	// std::cout << "Size of adj_list: " << adj_list.size() << std::endl;
-	// this->PrintAdjList();
 }
 
 
@@ -64,11 +60,6 @@ void Graph::CreateStreamerToAliasMap(std::string path_streamer_features, std::st
 		streamer_to_alias[tokens[4]] = tokens[1];
 	}
 	std::cout << "Streamer to Alias Map Created" << std::endl;
-	// // DEBUG:
-	// std::cout << "Size of map: " << streamer_to_alias.size() << std::endl;
-	// for (auto it = streamer_to_alias.begin(); it != streamer_to_alias.end(); ++it) {
-	// 	std::cout << it->first << " => " << it->second << '\n';
-	// }
 
 }
 
@@ -106,11 +97,6 @@ void Graph::CreateGameToIDMap(std::string path_streamer_features) {
 		game_to_game[tokens[2]] = tokens[3];
 	}
 	std::cout << "Game to ID Map Created" << std::endl;
-	// // DEBUG:
-	// std::cout << "Size of map: " << game_to_game.size() << std::endl;
-	// for (auto it = game_to_game.begin(); it != game_to_game.end(); ++it) {
-	// 	std::cout << it->first << " => " << it->second << '\n';
-	// }
 }
 
 /*
@@ -149,8 +135,6 @@ void Graph::PopulateGraph() {
 		
 	}
 	std::cout << "Nodes Added" << std::endl;
-	// std::cout << "Size of adj list: " << adj_list.size() << std::endl;
-
 	// use musae_ENGB_edges.csv to add edges to the graph
 
 	std::ifstream musae_ENGB_edges("DatasetProcessing/musae_ENGB_edges.csv");
@@ -176,8 +160,6 @@ void Graph::PopulateGraph() {
 		// Add the edge to the graph
 		this->AddEdge(tokens[0], tokens[1]);
 	}
-	// DEBUG:
-	// PrintAdjList();
 	std::cout << "Size of adj list: " << adj_list.size() << std::endl;
 
 	// We also can populate the streamer hash map here
@@ -195,10 +177,7 @@ void Graph::AddVertex(Node streamer) {
 		std::cout << streamer.alias_id << std::endl;
 		throw std::invalid_argument("Streamer already in graph");
 	}
-	// std::cout << "Adding " << streamer.alias_id << std::endl;
 	adj_list[streamer] = std::vector<Node>(); // Create an empty adj list for the streamer
-	// check if added correctly
-	// std::cout << adj_list.size() << std::endl;
 }
 
 /*
@@ -211,8 +190,6 @@ bool Graph::VertexInGraph(Node streamer) {
 	// Loop through all keys in adj list, dont use iterators
 	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
 		if (it->first.alias_id == streamer.alias_id) {
-			// std::cout << "First alias: " << it->first.alias_id << std::endl;
-			// std::cout << "Second alias: " << streamer.alias_id << std::endl;
 			return true;
 		}
 	}
@@ -404,8 +381,6 @@ std::vector<std::pair<Node, Node>> Graph::Kruskal(std::string game_name) {
 
 			if (set_u != set_v) {
 				mst.push_back(std::make_pair(u, v));
-				// Print out the edge
-				// std::cout << u.alias_id << "-" << v.alias_id << std::endl;
 				ds.Union(set_u, set_v);
 			} 
 		}
@@ -437,11 +412,6 @@ void Graph::StreamerHash() {
 		streamer_to_int[it->first.alias_id] = i;
 		i++;
 	}
-
-	// // print out the map
-	// for(auto it = streamer_to_int.begin(); it != streamer_to_int.end(); ++it) {
-	// 	std::cout << it->first << " " << it->second << std::endl;
-	// }
 }
 
 /*
