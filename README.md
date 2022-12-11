@@ -1,3 +1,8 @@
+## Final Submission Video:
+https://mediaspace.illinois.edu/media/t/1_d7y6dcpb
+## Slides:
+https://docs.google.com/presentation/d/1KgvU_rU6-xIDafbZzjqfe8VVoF8sUmfImGQSGVJZFNY/edit#slide=id.p
+
 # The Twitch Network
 
 We have access to a dataset of top english speaking twitch streamers where the edges will represent their mutual connection (undirected) and every node will be a streamer with features being the games they play and streaming habits. Our main goal here is to answer the questions: given a game played, what all streamers are playing that game and how are they connected? (Kruskal's algorithm for MST), How can we go from one streamer to another? (BFS traversal), and who is the streamer with the most connections? (PageRank algorithm)
