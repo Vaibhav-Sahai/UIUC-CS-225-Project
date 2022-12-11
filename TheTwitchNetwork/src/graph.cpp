@@ -340,48 +340,33 @@ std::vector<Node> Graph::BFSPath(Node start, Node end) {
 }
 
 // Pagerank to return node with most connections given a game name
-std::vector<Node> Graph::PageRank(std::string game_name, int num_streamers) {
-	std::vector<Node> streamers;
-	std::map<Node, int> pagerank;
-	std::map<Node, int> visited;
-	std::map<Node, int> parent;
-	std::queue<Node> q;
+Node Graph::PageRank(std::string game_name) {
+	//get node from given game name
+	Node game_node = GetNodeFromAlias(game_name);
 
-	// initialize visited map
-	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
-		visited[it->first] = 0;
-		parent[it->first] = 0;
-	}
+	//get all neighbors of game node
+	std::vector<Node> neighbors = GetNeighbors(game_node);
 
-	// add start node to queue
-	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
-		if (it->first.game_id == game_name) {
-			q.push(it->first);
-			visited[it->first] = 1;
+	Node popular;
+
+	//get most popular neighbor
+	for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
+		if (it->alias_id == game_name) {
+			continue;
 		}
-	}
-
-	while (!q.empty()) {
-		Node curr = q.front();
-		q.pop();
-		auto neighbors = GetNeighbors(curr);
-		for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
-			if (visited[*it] == 0) {
-				visited[*it] = 1;
-				q.push(*it);
-				parent[*it] = 1;
+		if (it->alias_id == popular.alias_id) {
+			continue;
+		}
+		if (it->alias_id != popular.alias_id) {
+			if (GetNeighbors(*it).size() > GetNeighbors(popular).size()) {
+				popular = *it;
 			}
 		}
 	}
 
-	for (auto it = adj_list.begin(); it != adj_list.end(); ++it) {
-		if (visited[it->first] == 1) {
-			streamers.push_back(it->first);
-		}
-	}
-
-	return streamers;
+	return popular;
 }
+
 
 /*
  * Function to create kruskal mst

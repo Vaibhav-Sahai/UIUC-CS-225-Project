@@ -66,7 +66,7 @@ class Graph {
 
         std::vector<Node> BFSPath(Node start, Node end);
 
-        std::vector<Node> PageRank(std::string game_name, int num_streamers);
+        Node PageRank(std::string game_name);
 
         std::vector<std::pair<Node, Node>> Kruskal(std::string game_name); 
 
