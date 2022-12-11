@@ -6,7 +6,29 @@ Graph::Graph(std::string message) {
 	this->CreateStreamerToAliasMap("DatasetProcessing/streamer_features.csv", "DatasetProcessing/musae_ENGB_target.csv");
   	this->CreateGameToIDMap("DatasetProcessing/streamer_features.csv");
 	this->PopulateGraph();
-	this->Kruskal("24241.0");
+	// this->Kruskal("24241.0");
+}
+
+/*
+ * Parameterized constructor for Graph
+ * @param streamers: Vector of streamer names paired with game_id
+ * @param edges: Vector of edges
+*/
+Graph::Graph(std::vector<std::pair<std::string, std::string>> streamers, std::vector<std::pair<std::string, std::string>> edges) {
+	// Iterate through the streamers vector and add each streamer to the graph
+	for (unsigned int i = 0; i < streamers.size(); i++) {
+		Node streamer(streamers[i].first, streamers[i].second);
+		this->AddVertex(streamer);
+	}
+
+	// Iterate through the edges vector and add each edge to the graph
+	for (unsigned int i = 0; i < edges.size(); i++) {
+		this->AddEdge(edges[i].first, edges[i].second);
+	}
+
+	// DEBUG:
+	std::cout << "Size of adj_list: " << adj_list.size() << std::endl;
+	// this->PrintAdjList();
 }
 
 
@@ -361,8 +383,12 @@ std::vector<Node> Graph::PageRank(std::string game_name, int num_streamers) {
 	return streamers;
 }
 
-// Kruskal's algorithm to find the minimum spanning tree while adhering to a game id
-void Graph::Kruskal(std::string game_name) {
+/*
+ * Function to create kruskal mst
+ * @param game_name: The name of the game to create the mst for
+ * @return: A vector of edges that make up the mst
+*/
+std::vector<std::pair<Node, Node>> Graph::Kruskal(std::string game_name) {
 	std::vector<std::pair<Node, Node>> mst;
 	DisjointSets ds(adj_list.size());
 
@@ -448,17 +474,4 @@ int DisjointSets::GetNumSets() {
 		}
 	}
 	return num_sets;
-}
-
-// TEST functions
-void DisjointSets::addelements(int num) {
-    for (int i = 0; i < num; i++) {
-        rank.push_back(-1);
-    }
-}
-
-int DisjointSets::size(int elem) {
-    int root = Find(elem);
-    int return_val = rank[root];
-    return return_val * -1;
 }

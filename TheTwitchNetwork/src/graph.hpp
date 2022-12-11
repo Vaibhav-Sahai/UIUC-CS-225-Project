@@ -11,6 +11,9 @@
 #include <fstream>
 #include <iostream>
 
+// Functions to parse a csv to a string vector
+
+std::vector<std::pair<std::string, std::string>> csv2streamer(std::string path);
 
 // Struct that holds our node attributes
 struct Node {
@@ -49,7 +52,10 @@ struct Node {
 class Graph {
     public:
         Graph(std::string message);
-        // std::set<int> BFS(int start_id);
+
+        // Our parameterized constructor that takes in 2 vectors, one for streamer names paired with game_id and one for edges
+        Graph(std::vector<std::pair<std::string, std::string>> streamers, std::vector<std::pair<std::string, std::string>> edges);
+
         void PopulateGraph();
 
         // Get adjacency list
@@ -60,11 +66,9 @@ class Graph {
 
         std::vector<Node> BFSPath(Node start, Node end);
 
-        std::vector<Node> FindMostPopularStreamers(int num_streamers);
-
         std::vector<Node> PageRank(std::string game_name, int num_streamers);
 
-        void Kruskal(std::string game_name); 
+        std::vector<std::pair<Node, Node>> Kruskal(std::string game_name); 
 
         // Out here for test reasons
         void AddVertex(Node streamer);
@@ -82,8 +86,6 @@ class Graph {
         // Map a streamerid to an unique int
         std::map<std::string, int> streamer_to_int;
 
-
-
         // Private Helper
         void CreateStreamerToAliasMap(std::string path_streamer_features, std::string path_musae_ENGB_target);
         void CreateGameToIDMap(std::string path_streamer_features);
@@ -97,8 +99,10 @@ class Graph {
         // Print the adjacency list
         void PrintAdjList();
 };
-// Disjoint Set using string instead of int
 
+
+
+// Disjoint Set using string instead of int
 class DisjointSets {
     public:
         DisjointSets();
