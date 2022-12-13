@@ -46,12 +46,41 @@ int main() {
   // std::vector<std::pair<Node, Node>> kruskal_result = g.KruskalPath(Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here]), Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here*]));
 
   // for (int i = 0; i < kruskal_result.size(); i++) {
-  //   std::cout << kruskal_result[i].first.alias_id << " " << kruskal_result[i].first.game_id << " " << kruskal_result[i].second.alias_id << " " << kruskal_result[i].second.game_id << std::endl;
+  //     // get streamer name from alias_id
+  //     std::string streamer_name = "";
+  //     for (auto it = streamer_alias.begin(); it != streamer_alias.end(); it++) {
+  //       if (it->second == bfs_result[i].alias_id) {
+  //         streamer_name = it->first;
+  //       }
+  //     }
+  //     // get game name from game_id
+  //     std::string game_name = "";
+  //     for (auto it = game_id.begin(); it != game_id.end(); it++) {
+  //       if (it->second == bfs_result[i].game_id) {
+  //         game_name = it->first;
+  //       }
+  //     }
+  //     std::cout << streamer_name << " " << game_name << std::endl;
   // }
 
   // An example of pagerank is shown below
 
   // Node pagerank_result = g.FindMostPopularStreamer(game_id[*Insert Game Here*]);
+  // // convert alias_id to streamer name
+  // std::string streamer_name = "";
+  // for (auto it = streamer_alias.begin(); it != streamer_alias.end(); it++) {
+  //   if (it->second == pagerank_result.alias_id) {
+  //     streamer_name = it->first;
+  //   }
+  // }
+
+  // // convert game_id to game name
+  // std::string game_name = "";
+  // for (auto it = game_id.begin(); it != game_id.end(); it++) {
+  //   if (it->second == pagerank_result.game_id) {
+  //     game_name = it->first;
+  //   }
+  // }
 
   // std::cout << pagerank_result.alias_id << " " << pagerank_result.game_id << std::endl;
 
