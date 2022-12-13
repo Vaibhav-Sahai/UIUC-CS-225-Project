@@ -1,3 +1,8 @@
+## Final Submission Video:
+https://mediaspace.illinois.edu/media/t/1_d7y6dcpb
+## Slides:
+https://docs.google.com/presentation/d/1KgvU_rU6-xIDafbZzjqfe8VVoF8sUmfImGQSGVJZFNY/edit#slide=id.p
+
 # The Twitch Network
 
 We have access to a dataset of top english speaking twitch streamers where the edges will represent their mutual connection (undirected) and every node will be a streamer with features being the games they play and streaming habits. Our main goal here is to answer the questions: given a game played, what all streamers are playing that game and how are they connected? (Kruskal's algorithm for MST), How can we go from one streamer to another? (BFS traversal), and who is the streamer with the most connections? (PageRank algorithm)
@@ -12,6 +17,9 @@ First, please make sure you've clang++ installed and are inside the `TheTwitchNe
 ```
 
 Make any changes to the `main.cpp` file for it to be reflected in our program.
+Our test cases perform a variety of tests, from testing edge cases to complex graphs and can be found in `test.cpp`.
+Our dataset is in `/TheTwitchNetwork/DatasetProcessing`, you can insert your own datasets here.
+Our output exec files and test exec files are stored in `/TheTwitchNetwork/bin`
 
 ## Usage:
 
@@ -22,6 +30,8 @@ First, please reference the list of all allowed categories on twitch from the fo
 2. To find a Minimum Spanning Tree, you can run the following command `std::vector<std::pair<Node, Node>> kruskal_result = g.KruskalPath(Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here]), Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here*]));`
 
 3. To find the most popular streamer for a category, you can run the following command `Node pagerank_result = g.FindMostPopularStreamer(game_id[*Insert Game Here*]);`
+
+### All of these must be run in main.cpp
 
 You can also run our test cases which will run faster because we have used smaller graphs (lesser nodes). PageRank is a demanding algorithm and hence takes a long time to run on a 6.6K node graph.
 
