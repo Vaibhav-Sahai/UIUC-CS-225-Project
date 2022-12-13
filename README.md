@@ -17,6 +17,9 @@ First, please make sure you've clang++ installed and are inside the `TheTwitchNe
 ```
 
 Make any changes to the `main.cpp` file for it to be reflected in our program.
+Our test cases perform a variety of tests, from testing edge cases to complex graphs and can be found in `test.cpp`.
+Our dataset is in `/TheTwitchNetwork/DatasetProcessing`, you can insert your own datasets here.
+Our output exec files and test exec files are stored in `/TheTwitchNetwork/bin`
 
 ## Usage:
 
