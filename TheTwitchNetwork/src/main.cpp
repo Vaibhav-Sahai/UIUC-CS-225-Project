@@ -21,10 +21,25 @@ int main() {
   // An example of bfs traversal is shown below
   // You can uncomment the below lines to run bfs search on the graph
 
-  // std::vector<Node> bfs_result = g.BFSPath(Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here]), Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here*]));
-  // for (int i = 0; i < bfs_result.size(); i++) {
-  //   std::cout << bfs_result[i].alias_id << " " << bfs_result[i].game_id << std::endl;
-  // }
+  std::vector<Node> bfs_result = g.BFSPath(Node(streamer_alias["GetUpAndGoGamer"], game_id["Cyberpunk 2077"]), Node(streamer_alias["Keeno654"], game_id["Fortnite"]));
+  std::cout << "The path is as follows: " << std::endl;
+  for (int i = 0; i < bfs_result.size(); i++) {
+    // get streamer name from alias_id
+    std::string streamer_name = "";
+    for (auto it = streamer_alias.begin(); it != streamer_alias.end(); it++) {
+      if (it->second == bfs_result[i].alias_id) {
+        streamer_name = it->first;
+      }
+    }
+    // get game name from game_id
+    std::string game_name = "";
+    for (auto it = game_id.begin(); it != game_id.end(); it++) {
+      if (it->second == bfs_result[i].game_id) {
+        game_name = it->first;
+      }
+    }
+    std::cout << streamer_name << " " << game_name << std::endl;
+  }
 
   // An example of kruskal traversal is shown below
 

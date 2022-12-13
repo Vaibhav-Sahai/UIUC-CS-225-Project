@@ -57,7 +57,7 @@ void Graph::CreateStreamerToAliasMap(std::string path_streamer_features, std::st
 		tokens.push_back(line);
 
 		// Add the streamer name to new_id to the map
-		streamer_to_alias[tokens[4]] = tokens[1];
+		streamer_to_alias[tokens[1]] = tokens[4];
 	}
 	std::cout << "Streamer to Alias Map Created" << std::endl;
 
@@ -94,7 +94,8 @@ void Graph::CreateGameToIDMap(std::string path_streamer_features) {
 		tokens.push_back(line);
 
 		// Add the game name to game ID to the map
-		game_to_game[tokens[2]] = tokens[3];
+		// game name is one from the last
+		game_to_game[tokens[3]] = tokens[2];
 	}
 	std::cout << "Game to ID Map Created" << std::endl;
 }
