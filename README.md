@@ -28,6 +28,8 @@ First, please reference the list of all allowed categories on twitch from the fo
 
 3. To find the most popular streamer for a category, you can run the following command `Node pagerank_result = g.FindMostPopularStreamer(game_id[*Insert Game Here*]);`
 
+### All of these must be run in main.cpp
+
 You can also run our test cases which will run faster because we have used smaller graphs (lesser nodes). PageRank is a demanding algorithm and hence takes a long time to run on a 6.6K node graph.
 
 ## Project Structure:
