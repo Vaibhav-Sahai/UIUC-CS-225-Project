@@ -23,7 +23,7 @@ Our output exec files and test exec files are stored in `/TheTwitchNetwork/bin`
 
 ## Usage:
 
-First, please reference the list of all allowed categories on twitch from the following link: https://www.twitch.tv/directory and find a streamer's streamer_id from this link: https://www.streamweasels.com/tools/convert-twitch-username-to-user-id/. You would need both to create a streamer node which is required for us to run our algoritms.
+First, please reference the list of all allowed categories on twitch from the following link: https://www.twitch.tv/directory and a streamer name from https://www.twitch.tv. You would need both to create a streamer node which is required for us to run our algoritms.
 
 1. To find the shortest path from a starting to an ending node, you can run the following command `std::vector<Node> bfs_result = g.BFSPath(Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here]), Node(streamer_alias[*Insert Name Here*], game_id[*Insert Game Here*]));`
 
