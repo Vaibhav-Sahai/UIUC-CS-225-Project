@@ -1,5 +1,5 @@
 ## Final Submission Video:
-https://mediaspace.illinois.edu/media/t/1_d7y6dcpb
+
 ## Slides:
 https://docs.google.com/presentation/d/1KgvU_rU6-xIDafbZzjqfe8VVoF8sUmfImGQSGVJZFNY/edit#slide=id.p
 
